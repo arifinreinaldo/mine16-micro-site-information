@@ -79,52 +79,331 @@ npm run dev
 
 5. Open [http://localhost:3000](http://localhost:3000) in your browser
 
-## Appwrite Setup
+## Appwrite Setup (Complete Guide)
 
-This microsite uses Appwrite as the backend database to store pet information.
+This microsite uses Appwrite as the backend database to store pet information. Follow these detailed steps to pair your application with Appwrite.
 
-### 1. Create an Appwrite Account
+### Step 1: Create an Appwrite Account & Project
 
-1. Go to [cloud.appwrite.io](https://cloud.appwrite.io) and create a free account
-2. Create a new project
+1. **Sign up for Appwrite**
+   - Visit [cloud.appwrite.io](https://cloud.appwrite.io)
+   - Click "Sign Up" and create a free account
+   - Verify your email address
 
-### 2. Create Database and Collection
+2. **Create a New Project**
+   - After logging in, click "Create Project"
+   - Enter a project name (e.g., "Pet Microsite")
+   - Click "Create"
+   - **Important**: Copy your **Project ID** from the project settings
+     - You'll find it at the top of the project dashboard
+     - It looks like: `6745abc123def456789`
 
-1. In your Appwrite project, go to **Databases**
-2. Create a new database
-3. Create a collection named "pets" (or any name you prefer)
-4. Add the following attributes to your collection:
+### Step 2: Get Your Project Credentials
 
-| Attribute Name | Type | Required | Array |
-|---------------|------|----------|-------|
-| petName | String | Yes | No |
-| species | String | Yes | No |
-| breed | String | Yes | No |
-| age | Integer | Yes | No |
-| gender | String | Yes | No |
-| color | String | Yes | No |
-| weight | String | Yes | No |
-| description | String | Yes | No |
-| personality | String | Yes | Yes |
-| medicalInfo | String | No | No |
-| imageUrl | String | No | No |
-| ownerName | String | Yes | No |
-| ownerEmail | String | Yes | No |
-| ownerPhone | String | Yes | No |
-| ownerAddress | String | No | No |
-| preferredContact | String | Yes | No |
+1. **Find Your Endpoint**
+   - The endpoint is usually: `https://cloud.appwrite.io/v1`
+   - If you're self-hosting, use your server URL
 
-5. Set collection permissions to allow **Read** access for **Any** role
+2. **Get Your Project ID**
+   - Go to your project dashboard
+   - Look for "Project ID" at the top
+   - Copy this ID (you'll need it later)
 
-### 3. Add Pet Data
+### Step 3: Create Database
 
-1. Go to your collection and click "Add Document"
-2. Fill in all the pet and owner information
-3. Copy the Document ID (you'll use this as the URL parameter)
+1. **Navigate to Databases**
+   - In your Appwrite project, click on **"Databases"** in the left sidebar
+   - Click **"Create Database"** button
+   - Enter a name: `pets_db` (or any name you prefer)
+   - Click **"Create"**
 
-### 4. Configure Environment Variables
+2. **Copy Database ID**
+   - After creation, you'll see your database listed
+   - Click on the database name
+   - **Copy the Database ID** from the URL or settings
+   - It looks like: `6745xyz123abc456789`
 
-Update your `.env.local` file with your Appwrite credentials from the project settings.
+### Step 4: Create Collection
+
+1. **Create a New Collection**
+   - Inside your database, click **"Create Collection"**
+   - Name it: `pets` (or any name you prefer)
+   - Click **"Create"**
+
+2. **Copy Collection ID**
+   - After creation, **copy the Collection ID**
+   - You'll find it in the collection settings or URL
+   - It looks like: `6745qrs123tuv456789`
+
+### Step 5: Add Attributes to Collection
+
+**Important**: Add these attributes in the exact order and format specified:
+
+Click **"Attributes"** tab, then **"Create Attribute"** for each:
+
+#### Pet Information Attributes:
+
+1. **petName**
+   - Type: `String`
+   - Size: `255`
+   - Required: ✅ Yes
+   - Array: ❌ No
+
+2. **species**
+   - Type: `String`
+   - Size: `100`
+   - Required: ✅ Yes
+   - Array: ❌ No
+
+3. **breed**
+   - Type: `String`
+   - Size: `100`
+   - Required: ✅ Yes
+   - Array: ❌ No
+
+4. **age**
+   - Type: `Integer`
+   - Min: `0`
+   - Max: `100`
+   - Required: ✅ Yes
+   - Array: ❌ No
+
+5. **gender**
+   - Type: `String`
+   - Size: `50`
+   - Required: ✅ Yes
+   - Array: ❌ No
+
+6. **color**
+   - Type: `String`
+   - Size: `100`
+   - Required: ✅ Yes
+   - Array: ❌ No
+
+7. **weight**
+   - Type: `String`
+   - Size: `50`
+   - Required: ✅ Yes
+   - Array: ❌ No
+
+8. **description**
+   - Type: `String`
+   - Size: `1000`
+   - Required: ✅ Yes
+   - Array: ❌ No
+
+9. **personality**
+   - Type: `String`
+   - Size: `100`
+   - Required: ✅ Yes
+   - **Array: ✅ YES** (This is important!)
+
+10. **medicalInfo**
+    - Type: `String`
+    - Size: `500`
+    - Required: ❌ No
+    - Array: ❌ No
+
+11. **imageUrl**
+    - Type: `String`
+    - Size: `500`
+    - Required: ❌ No
+    - Array: ❌ No
+
+#### Owner Information Attributes:
+
+12. **ownerName**
+    - Type: `String`
+    - Size: `255`
+    - Required: ✅ Yes
+    - Array: ❌ No
+
+13. **ownerEmail**
+    - Type: `String`
+    - Size: `255`
+    - Required: ✅ Yes
+    - Array: ❌ No
+
+14. **ownerPhone**
+    - Type: `String`
+    - Size: `50`
+    - Required: ✅ Yes
+    - Array: ❌ No
+
+15. **ownerAddress**
+    - Type: `String`
+    - Size: `500`
+    - Required: ❌ No
+    - Array: ❌ No
+
+16. **preferredContact**
+    - Type: `String`
+    - Size: `50`
+    - Required: ✅ Yes
+    - Array: ❌ No
+
+### Step 6: Configure Permissions
+
+**This is crucial for the microsite to work!**
+
+1. Click on the **"Settings"** tab in your collection
+2. Scroll down to **"Permissions"**
+3. Click **"Add Role"**
+4. Select **"Any"** from the dropdown
+5. Check the **"Read"** permission box ✅
+6. Click **"Update"**
+
+**Note**: Only enable "Read" permission for public access. Never enable "Create", "Update", or "Delete" for "Any" role for security reasons.
+
+### Step 7: Add Pet Data
+
+1. **Create Your First Pet Document**
+   - Go to the **"Documents"** tab in your collection
+   - Click **"Create Document"**
+   - Fill in all the fields:
+
+   ```
+   petName: Luna
+   species: Dog
+   breed: Golden Retriever
+   age: 3
+   gender: Female
+   color: Golden
+   weight: 28 kg
+   description: Luna is a friendly and energetic Golden Retriever...
+   personality: ["Friendly and social", "Loves to play fetch", "Great with children"]
+   medicalInfo: Up to date on all vaccinations. Spayed.
+   imageUrl: (leave empty or add image URL)
+   ownerName: John Doe
+   ownerEmail: john.doe@example.com
+   ownerPhone: +1 (555) 123-4567
+   ownerAddress: 123 Pet Street, Pet City, PC 12345
+   preferredContact: Email
+   ```
+
+2. **Copy the Document ID**
+   - After creating the document, you'll see it listed
+   - Click on the document to open it
+   - **Copy the Document ID** (found at the top)
+   - It looks like: `6745mno123pqr456789`
+   - This ID is what you'll use in your URL: `?param=6745mno123pqr456789`
+
+### Step 8: Configure Your Application
+
+1. **Update Environment Variables**
+
+   Open your `.env.local` file and update it with your Appwrite credentials:
+
+   ```env
+   NEXT_PUBLIC_APPWRITE_ENDPOINT=https://cloud.appwrite.io/v1
+   NEXT_PUBLIC_APPWRITE_PROJECT_ID=your_project_id_here
+   NEXT_PUBLIC_APPWRITE_DATABASE_ID=your_database_id_here
+   NEXT_PUBLIC_APPWRITE_COLLECTION_ID=your_collection_id_here
+   ```
+
+   Replace each value with the IDs you copied in the previous steps.
+
+2. **Example Configuration**
+
+   ```env
+   NEXT_PUBLIC_APPWRITE_ENDPOINT=https://cloud.appwrite.io/v1
+   NEXT_PUBLIC_APPWRITE_PROJECT_ID=6745abc123def456789
+   NEXT_PUBLIC_APPWRITE_DATABASE_ID=6745xyz123abc456789
+   NEXT_PUBLIC_APPWRITE_COLLECTION_ID=6745qrs123tuv456789
+   ```
+
+### Step 9: Test Your Connection
+
+1. **Restart Your Development Server**
+   ```bash
+   # Stop the server (Ctrl+C) and restart
+   npm run dev
+   ```
+
+2. **Test the URL**
+   - Open your browser
+   - Go to: `http://localhost:3000/?param=YOUR_DOCUMENT_ID`
+   - Replace `YOUR_DOCUMENT_ID` with the Document ID you copied
+   - Example: `http://localhost:3000/?param=6745mno123pqr456789`
+
+3. **Verify Data Loads**
+   - You should see your pet's information displayed
+   - Check that the owner contact information is correct
+   - If you see "Pet Not Found", double-check:
+     - Document ID is correct
+     - Permissions are set to allow "Read" for "Any"
+     - Environment variables are correct
+     - You've restarted the dev server
+
+### Step 10: Deploy to Vercel (with Appwrite)
+
+1. **Push to GitHub**
+   ```bash
+   git add .
+   git commit -m "Add Appwrite configuration"
+   git push
+   ```
+
+2. **Deploy to Vercel**
+   - Go to [vercel.com](https://vercel.com)
+   - Import your repository
+   - **Before deploying**, add environment variables:
+     - Click "Environment Variables"
+     - Add all four variables:
+       - `NEXT_PUBLIC_APPWRITE_ENDPOINT`
+       - `NEXT_PUBLIC_APPWRITE_PROJECT_ID`
+       - `NEXT_PUBLIC_APPWRITE_DATABASE_ID`
+       - `NEXT_PUBLIC_APPWRITE_COLLECTION_ID`
+     - Use the same values from your `.env.local`
+   - Click "Deploy"
+
+3. **Test Production**
+   - After deployment, visit: `https://your-app.vercel.app/?param=YOUR_DOCUMENT_ID`
+   - Verify everything works in production
+
+### Troubleshooting
+
+**Problem: "Pet Not Found" error**
+- ✅ Verify Document ID is correct
+- ✅ Check collection permissions (Read access for Any)
+- ✅ Confirm environment variables are set correctly
+- ✅ Make sure you've restarted the dev server
+
+**Problem: "Failed to fetch" or connection errors**
+- ✅ Check your internet connection
+- ✅ Verify Appwrite endpoint URL is correct
+- ✅ Confirm Project ID, Database ID, and Collection ID match
+- ✅ Check Appwrite console for service status
+
+**Problem: Personality traits not showing**
+- ✅ Ensure "personality" attribute is set as an Array
+- ✅ Enter personality traits as separate items in the array
+
+**Problem: Environment variables not working on Vercel**
+- ✅ Double-check all variable names start with `NEXT_PUBLIC_`
+- ✅ Redeploy after adding/changing environment variables
+- ✅ Check Vercel project settings → Environment Variables
+
+### Quick Reference: Where to Find IDs
+
+| ID Type | Where to Find It |
+|---------|-----------------|
+| **Project ID** | Project Dashboard → Top of page |
+| **Database ID** | Databases → Click database → Copy from URL or settings |
+| **Collection ID** | Database → Collections → Click collection → Copy from URL |
+| **Document ID** | Collection → Documents → Click document → Top of page |
+
+### Adding More Pets
+
+To add additional pets to your microsite:
+
+1. Go to your Appwrite collection
+2. Click "Create Document"
+3. Fill in all the pet and owner information
+4. Copy the new Document ID
+5. Share the URL: `https://your-domain.com/?param=NEW_DOCUMENT_ID`
+
+Each pet gets its own unique URL based on its Document ID!
 
 ## Usage
 
