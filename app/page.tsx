@@ -11,23 +11,48 @@ export default async function Home({ searchParams }: HomeProps) {
   const params = await searchParams;
   const petId = params.param as string | undefined;
 
-  // Fetch data from Appwrite if petId is provided, otherwise use static data
-  let pet = petInfo;
-  let owner = ownerInfo;
-  let notFound = false;
+  // Show "no data" message if no parameter is provided
+  if (!petId) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
+        <header className="bg-white shadow-sm">
+          <div className="max-w-6xl mx-auto px-4 py-6">
+            <h1 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
+              🐾 Pet Information Hub
+            </h1>
+            <p className="text-gray-600 mt-1">Your trusted pet profile and contact resource</p>
+          </div>
+        </header>
 
-  if (petId) {
-    const data = await getPetDataById(petId);
-    if (data) {
-      pet = data.pet;
-      owner = data.owner;
-    } else {
-      notFound = true;
-    }
+        <main className="max-w-6xl mx-auto px-4 py-12">
+          <div className="bg-white rounded-2xl shadow-xl p-12 text-center">
+            <div className="text-6xl mb-4">📋</div>
+            <h2 className="text-2xl font-bold text-gray-800 mb-2">No Data Detected</h2>
+            <p className="text-gray-600 mb-6">
+              No pet ID parameter found in the URL.
+            </p>
+            <p className="text-gray-500 text-sm mb-4">
+              To view a pet profile, please use a URL with the pet ID parameter:
+            </p>
+            <div className="bg-gray-50 rounded-lg p-4 mb-6 inline-block">
+              <code className="text-sm text-gray-700">
+                https://your-domain.com/?param=YOUR_PET_ID
+              </code>
+            </div>
+            <p className="text-gray-500 text-xs">
+              Contact the pet owner to get the correct link.
+            </p>
+          </div>
+        </main>
+      </div>
+    );
   }
 
+  // Fetch data from Appwrite
+  const data = await getPetDataById(petId);
+
   // If pet not found, show error message
-  if (notFound) {
+  if (!data) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
         <header className="bg-white shadow-sm">
@@ -54,6 +79,8 @@ export default async function Home({ searchParams }: HomeProps) {
       </div>
     );
   }
+
+  const { pet, owner } = data;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
