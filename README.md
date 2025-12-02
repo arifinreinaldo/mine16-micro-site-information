@@ -210,33 +210,41 @@ Click **"Attributes"** tab, then **"Create Attribute"** for each:
     - Required: ❌ No
     - Array: ❌ No
 
+12. **petType**
+    - Type: `String` (enum)
+    - Size: `20`
+    - Required: ❌ No
+    - Array: ❌ No
+    - **Valid values:** `dog`, `cat`, `other`
+    - **Note:** Determines the default avatar emoji displayed
+
 #### Owner Information Attributes:
 
-12. **ownerName**
+13. **ownerName**
     - Type: `String`
     - Size: `255`
     - Required: ✅ Yes
     - Array: ❌ No
 
-13. **ownerEmail**
+14. **ownerEmail**
     - Type: `String`
     - Size: `255`
     - Required: ✅ Yes
     - Array: ❌ No
 
-14. **ownerPhone**
+15. **ownerPhone**
     - Type: `String`
     - Size: `50`
     - Required: ✅ Yes
     - Array: ❌ No
 
-15. **ownerAddress**
+16. **ownerAddress**
     - Type: `String`
     - Size: `500`
     - Required: ❌ No
     - Array: ❌ No
 
-16. **preferredContact**
+17. **preferredContact**
     - Type: `String`
     - Size: `50`
     - Required: ✅ Yes
@@ -274,6 +282,7 @@ Click **"Attributes"** tab, then **"Create Attribute"** for each:
    personality: ["Friendly and social", "Loves to play fetch", "Great with children"]
    medicalInfo: Up to date on all vaccinations. Spayed.
    imageUrl: (leave empty or add image URL)
+   petType: dog
    ownerName: John Doe
    ownerEmail: john.doe@example.com
    ownerPhone: +1 (555) 123-4567
@@ -407,6 +416,19 @@ Each pet gets its own unique URL based on its Document ID!
 
 ## Usage
 
+### Demo Profile
+
+To see the microsite in action, try the demo profile:
+
+```
+https://your-domain.com/?param=AIBO
+```
+
+This displays a sample Aibo (robotic dog) profile with demo data. Perfect for:
+- Testing the microsite functionality
+- Showing potential users what the site looks like
+- Development and debugging
+
 ### Dynamic URLs
 
 To view a specific pet's profile, use the URL parameter `param`:
@@ -419,11 +441,21 @@ For example:
 ```
 https://your-domain.com/?param=DOGSZ
 https://your-domain.com/?param=673abc123def456
+https://your-domain.com/?param=AIBO (demo)
 ```
 
-### Fallback Data
+### Avatar Types
 
-If no `param` is provided in the URL, the site will display the static fallback data from `data/petData.ts`.
+The microsite displays different avatars based on the `petType` field:
+- **dog**: 🐕 Dog emoji
+- **cat**: 🐈 Cat emoji
+- **other**: 🐾 Paw prints emoji
+
+Set the `petType` field in your Appwrite document to customize the avatar.
+
+### No Parameter Behavior
+
+If no `param` is provided in the URL, the site will display a "No Data Detected" message with instructions on how to use the microsite and a link to the demo profile.
 
 ## Customization
 
