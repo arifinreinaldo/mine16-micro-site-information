@@ -1,8 +1,60 @@
 import PetProfile from "@/components/PetProfile";
 import ContactSection from "@/components/ContactSection";
 import { petInfo, ownerInfo } from "@/data/petData";
+import { getPetDataById } from "@/lib/getPetData";
 
-export default function Home() {
+interface HomeProps {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}
+
+export default async function Home({ searchParams }: HomeProps) {
+  const params = await searchParams;
+  const petId = params.param as string | undefined;
+
+  // Fetch data from Appwrite if petId is provided, otherwise use static data
+  let pet = petInfo;
+  let owner = ownerInfo;
+  let notFound = false;
+
+  if (petId) {
+    const data = await getPetDataById(petId);
+    if (data) {
+      pet = data.pet;
+      owner = data.owner;
+    } else {
+      notFound = true;
+    }
+  }
+
+  // If pet not found, show error message
+  if (notFound) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
+        <header className="bg-white shadow-sm">
+          <div className="max-w-6xl mx-auto px-4 py-6">
+            <h1 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
+              🐾 Pet Information Hub
+            </h1>
+            <p className="text-gray-600 mt-1">Your trusted pet profile and contact resource</p>
+          </div>
+        </header>
+
+        <main className="max-w-6xl mx-auto px-4 py-12">
+          <div className="bg-white rounded-2xl shadow-xl p-12 text-center">
+            <div className="text-6xl mb-4">🔍</div>
+            <h2 className="text-2xl font-bold text-gray-800 mb-2">Pet Not Found</h2>
+            <p className="text-gray-600 mb-6">
+              We couldn't find a pet with the ID: <span className="font-mono font-semibold">{petId}</span>
+            </p>
+            <p className="text-gray-500 text-sm">
+              Please check the ID and try again, or contact the pet owner for the correct link.
+            </p>
+          </div>
+        </main>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
       {/* Header */}
@@ -17,8 +69,8 @@ export default function Home() {
 
       {/* Main Content */}
       <main className="max-w-6xl mx-auto px-4 py-12">
-        <PetProfile pet={petInfo} />
-        <ContactSection owner={ownerInfo} />
+        <PetProfile pet={pet} />
+        <ContactSection owner={owner} />
       </main>
 
       {/* Footer */}
