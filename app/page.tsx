@@ -69,7 +69,7 @@ export default async function Home({ searchParams }: HomeProps) {
         </header>
 
         {/* Main Content */}
-        <main className="max-w-6xl mx-auto px-4 py-12">
+        <main className="max-w-6xl mx-auto px-4 py-12 pb-16">
           <div className="mb-4 bg-blue-50 border border-blue-200 rounded-lg p-4 text-center">
             <p className="text-blue-800 text-sm">
               <span className="font-semibold">Demo Mode:</span> You're viewing the default Aibo profile.
@@ -79,18 +79,6 @@ export default async function Home({ searchParams }: HomeProps) {
           <PetProfile pet={pet} />
           <ContactSection owner={owner} />
         </main>
-
-        {/* Footer */}
-        <footer className="bg-white mt-16 border-t border-gray-200">
-          <div className="max-w-6xl mx-auto px-4 py-8 text-center text-gray-600">
-            <p className="text-sm">
-              Built with Next.js and Tailwind CSS • Ready for Vercel deployment
-            </p>
-            <p className="text-xs mt-2 text-gray-500">
-              Pet Microsite Information System
-            </p>
-          </div>
-        </footer>
       </div>
     );
   }
@@ -142,22 +130,10 @@ export default async function Home({ searchParams }: HomeProps) {
       </header>
 
       {/* Main Content */}
-      <main className="max-w-6xl mx-auto px-4 py-12">
+      <main className="max-w-6xl mx-auto px-4 py-12 pb-16">
         <PetProfile pet={pet} />
         <ContactSection owner={owner} />
       </main>
-
-      {/* Footer */}
-      <footer className="bg-white mt-16 border-t border-gray-200">
-        <div className="max-w-6xl mx-auto px-4 py-8 text-center text-gray-600">
-          <p className="text-sm">
-            Built with Next.js and Tailwind CSS • Ready for Vercel deployment
-          </p>
-          <p className="text-xs mt-2 text-gray-500">
-            Pet Microsite Information System
-          </p>
-        </div>
-      </footer>
     </div>
   );
 }
