@@ -6,89 +6,71 @@ interface ContactSectionProps {
 
 export default function ContactSection({ owner }: ContactSectionProps) {
   return (
-    <div className="w-full max-w-4xl mx-auto mt-8">
-      <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
+    <div className="w-full max-w-5xl mx-auto mt-6">
+      <div className="bg-white border border-gray-200 shadow-sm overflow-hidden">
         {/* Header */}
-        <div className="bg-gradient-to-r from-purple-500 to-pink-500 p-6 text-white">
-          <h2 className="text-3xl font-bold flex items-center gap-3">
-            <span>📞</span>
-            Contact Owner
-          </h2>
-          <p className="mt-2 opacity-90">Get in touch with {owner.name}</p>
+        <div className="border-b border-gray-200 px-8 py-6 bg-white">
+          <h2 className="text-2xl font-bold text-gray-900">Owner Contact</h2>
+          <p className="text-sm text-gray-500 mt-1">Get in touch with {owner.name}</p>
         </div>
 
         {/* Contact Information */}
         <div className="p-8">
-          <div className="grid md:grid-cols-2 gap-6">
+          <div className="grid md:grid-cols-2 gap-x-12 gap-y-6">
             {/* Name */}
-            <div className="space-y-2">
-              <div className="flex items-center gap-2 text-gray-500 text-sm font-medium">
-                <span>👤</span>
-                <span>Name</span>
-              </div>
-              <p className="text-lg font-semibold text-gray-800 pl-6">{owner.name}</p>
+            <div>
+              <p className="text-sm text-gray-500 mb-1">Name</p>
+              <p className="text-base font-medium text-gray-900">{owner.name}</p>
             </div>
 
             {/* Email */}
-            <div className="space-y-2">
-              <div className="flex items-center gap-2 text-gray-500 text-sm font-medium">
-                <span>📧</span>
-                <span>Email</span>
-              </div>
+            <div>
+              <p className="text-sm text-gray-500 mb-1">Email</p>
               <a
                 href={`mailto:${owner.email}`}
-                className="text-lg font-semibold text-blue-600 hover:text-blue-800 pl-6 block transition-colors"
+                className="text-base font-medium text-gray-900 hover:text-gray-600 underline transition-colors"
               >
                 {owner.email}
               </a>
             </div>
 
             {/* Phone */}
-            <div className="space-y-2">
-              <div className="flex items-center gap-2 text-gray-500 text-sm font-medium">
-                <span>📱</span>
-                <span>Phone</span>
-              </div>
+            <div>
+              <p className="text-sm text-gray-500 mb-1">Phone</p>
               <a
                 href={`tel:${owner.phone}`}
-                className="text-lg font-semibold text-blue-600 hover:text-blue-800 pl-6 block transition-colors"
+                className="text-base font-medium text-gray-900 hover:text-gray-600 underline transition-colors"
               >
                 {owner.phone}
               </a>
             </div>
 
             {/* Preferred Contact */}
-            <div className="space-y-2">
-              <div className="flex items-center gap-2 text-gray-500 text-sm font-medium">
-                <span>⭐</span>
-                <span>Preferred Contact</span>
-              </div>
-              <p className="text-lg font-semibold text-gray-800 pl-6">{owner.preferredContact}</p>
+            <div>
+              <p className="text-sm text-gray-500 mb-1">Preferred Contact Method</p>
+              <p className="text-base font-medium text-gray-900">{owner.preferredContact}</p>
             </div>
           </div>
 
           {/* Address */}
           {owner.address && (
-            <div className="mt-6 p-6 bg-purple-50 rounded-xl border border-purple-200">
-              <div className="flex items-center gap-2 text-purple-900 text-sm font-medium mb-2">
-                <span>📍</span>
-                <span>Address</span>
-              </div>
-              <p className="text-purple-800 pl-6">{owner.address}</p>
+            <div className="mt-6 pt-6 border-t border-gray-200">
+              <p className="text-sm text-gray-500 mb-1">Address</p>
+              <p className="text-base font-medium text-gray-900">{owner.address}</p>
             </div>
           )}
 
           {/* Contact Buttons */}
-          <div className="mt-8 flex flex-col sm:flex-row gap-4">
+          <div className="mt-8 pt-6 border-t border-gray-200 flex flex-col sm:flex-row gap-3">
             <a
               href={`mailto:${owner.email}`}
-              className="flex-1 bg-gradient-to-r from-blue-500 to-blue-600 text-white px-6 py-3 rounded-lg font-semibold text-center hover:from-blue-600 hover:to-blue-700 transition-all shadow-md hover:shadow-lg"
+              className="flex-1 bg-gray-900 text-white px-6 py-3 text-center font-medium hover:bg-gray-800 transition-colors text-sm"
             >
               Send Email
             </a>
             <a
               href={`tel:${owner.phone}`}
-              className="flex-1 bg-gradient-to-r from-purple-500 to-purple-600 text-white px-6 py-3 rounded-lg font-semibold text-center hover:from-purple-600 hover:to-purple-700 transition-all shadow-md hover:shadow-lg"
+              className="flex-1 border border-gray-900 text-gray-900 px-6 py-3 text-center font-medium hover:bg-gray-50 transition-colors text-sm"
             >
               Call Now
             </a>
