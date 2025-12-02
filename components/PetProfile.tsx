@@ -6,6 +6,20 @@ interface PetProfileProps {
 }
 
 export default function PetProfile({ pet }: PetProfileProps) {
+  // Determine avatar based on petType
+  const getAvatar = () => {
+    switch (pet.petType) {
+      case 'dog':
+        return '🐕';
+      case 'cat':
+        return '🐈';
+      case 'other':
+        return '🐾';
+      default:
+        return '🐕'; // Default to dog
+    }
+  };
+
   return (
     <div className="w-full max-w-4xl mx-auto">
       <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
@@ -21,7 +35,7 @@ export default function PetProfile({ pet }: PetProfileProps) {
             {/* Pet Image */}
             <div className="flex justify-center items-start">
               <div className="relative w-full aspect-square rounded-xl overflow-hidden bg-gradient-to-br from-blue-100 to-purple-100 flex items-center justify-center">
-                <div className="text-6xl">🐕</div>
+                <div className="text-6xl">{getAvatar()}</div>
               </div>
             </div>
 

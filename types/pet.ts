@@ -10,6 +10,7 @@ export interface Pet {
   personality: string[];
   medicalInfo?: string;
   imageUrl: string;
+  petType?: 'dog' | 'cat' | 'other'; // Determines default avatar
 }
 
 export interface Owner {

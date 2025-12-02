@@ -17,6 +17,7 @@ export interface AppwritePetDocument {
   personality: string[] | string; // Can be array or comma-separated string
   medicalInfo?: string;
   imageUrl?: string;
+  petType?: 'dog' | 'cat' | 'other'; // Determines default avatar
   // Owner fields
   ownerName: string;
   ownerEmail: string;
@@ -74,7 +75,8 @@ export async function getPetDataByCode(code: string): Promise<PetDataResponse | 
       description: doc.description,
       personality: personality,
       medicalInfo: doc.medicalInfo,
-      imageUrl: doc.imageUrl || '/pet-image.jpg'
+      imageUrl: doc.imageUrl || '/pet-image.jpg',
+      petType: doc.petType
     };
 
     const owner: Owner = {
@@ -125,7 +127,8 @@ export async function getPetDataById(documentId: string): Promise<PetDataRespons
       description: doc.description,
       personality: personality,
       medicalInfo: doc.medicalInfo,
-      imageUrl: doc.imageUrl || '/pet-image.jpg'
+      imageUrl: doc.imageUrl || '/pet-image.jpg',
+      petType: doc.petType
     };
 
     const owner: Owner = {

@@ -1,5 +1,36 @@
 import { Pet, Owner } from "@/types/pet";
 
+// AIBO - Default demo pet (accessible via ?param=AIBO)
+export const aiboInfo: Pet = {
+  name: "Aibo",
+  species: "Dog",
+  breed: "Robotic Companion",
+  age: 2,
+  gender: "Male",
+  color: "White & Silver",
+  weight: "2.2 kg",
+  description: "Aibo is an intelligent robotic dog companion that brings joy and entertainment to any household. With advanced AI capabilities and adorable behaviors, Aibo responds to touch, voice commands, and loves to play.",
+  personality: [
+    "Intelligent and responsive",
+    "Loves to play and entertain",
+    "Learns new tricks",
+    "Low maintenance",
+    "Great for all ages"
+  ],
+  medicalInfo: "No medical needs. Requires regular charging and software updates.",
+  imageUrl: "/aibo-image.jpg",
+  petType: "dog"
+};
+
+export const aiboOwner: Owner = {
+  name: "Demo Owner",
+  email: "demo@petmicrosite.com",
+  phone: "+1 (555) 000-0000",
+  address: "123 Demo Street, Tech City, TC 00000",
+  preferredContact: "Email"
+};
+
+// Luna - Sample pet data (kept for backward compatibility)
 export const petInfo: Pet = {
   name: "Luna",
   species: "Dog",
@@ -17,7 +48,8 @@ export const petInfo: Pet = {
     "Energetic and playful"
   ],
   medicalInfo: "Up to date on all vaccinations. Spayed. Regular vet check-ups.",
-  imageUrl: "/pet-image.jpg"
+  imageUrl: "/pet-image.jpg",
+  petType: "dog"
 };
 
 export const ownerInfo: Owner = {
