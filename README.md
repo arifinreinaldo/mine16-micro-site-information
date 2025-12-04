@@ -628,7 +628,7 @@ To enable this feature, you need to create a second collection in Appwrite:
    - Copy the Collection ID
 
 2. **Add Required Attributes**:
-   - `petID` - String, Size: 100, Required (Note: capital ID)
+   - `petId` - String, Size: 100, Required
    - `petName` - String, Size: 255, Required
    - `finderName` - String, Size: 255, Required
    - `finderPhone` - String, Size: 50, Required
