@@ -2,9 +2,51 @@ import PetProfile from "@/components/PetProfile";
 import FoundPetForm from "@/components/FoundPetForm";
 import { petInfo, ownerInfo, aiboInfo, aiboOwner } from "@/data/petData";
 import { getPetDataById } from "@/lib/getPetData";
+import type { Metadata } from "next";
 
 interface HomeProps {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}
+
+export async function generateMetadata({ searchParams }: HomeProps): Promise<Metadata> {
+  const params = await searchParams;
+  const petId = params.param as string | undefined;
+
+  // No parameter provided
+  if (!petId) {
+    return {
+      title: "Pet Information Hub",
+      description: "Your trusted pet profile and contact resource.",
+    };
+  }
+
+  // AIBO demo mode
+  if (petId.toUpperCase() === 'AIBO') {
+    return {
+      title: `Pet Information Hub | ${aiboInfo.name}'s Profile`,
+      description: `Welcome to ${aiboInfo.name}'s pet profile. Get to know our ${aiboInfo.breed} and find owner contact information.`,
+      keywords: ["pet", "dog", aiboInfo.breed.toLowerCase(), "pet profile", "contact owner"],
+    };
+  }
+
+  // Fetch real pet data
+  const data = await getPetDataById(petId);
+
+  // Pet not found
+  if (!data) {
+    return {
+      title: "Pet Not Found | Pet Information Hub",
+      description: "The requested pet profile could not be found.",
+    };
+  }
+
+  // Dynamic metadata for the pet
+  const { pet } = data;
+  return {
+    title: `Pet Information Hub | ${pet.name}'s Profile`,
+    description: `Welcome to ${pet.name}'s pet profile. Get to know our ${pet.breed} and find owner contact information.`,
+    keywords: ["pet", pet.species.toLowerCase(), pet.breed.toLowerCase(), "pet profile", "contact owner"],
+  };
 }
 
 export default async function Home({ searchParams }: HomeProps) {

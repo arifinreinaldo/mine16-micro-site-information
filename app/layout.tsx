@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Pet Information Hub | Luna's Profile",
-  description: "Welcome to Luna's pet profile. Get to know our friendly Golden Retriever and find owner contact information.",
-  keywords: ["pet", "dog", "golden retriever", "pet profile", "contact owner"],
+  title: "Pet Information Hub",
+  description: "Your trusted pet profile and contact resource.",
+  keywords: ["pet", "pet profile", "contact owner"],
 };
 
 export default function RootLayout({
