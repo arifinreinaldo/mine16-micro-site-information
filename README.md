@@ -149,6 +149,12 @@ This microsite uses Appwrite as the backend database to store pet information. F
 
 Click **"Attributes"** tab, then **"Create Attribute"** for each:
 
+**Note on Required Fields:**
+- Only **petName**, **species**, and **breed** are required
+- All other pet detail fields (age, gender, color, weight, description, personality, medicalInfo) are optional
+- This allows you to create minimal profiles and add details later
+- Empty optional fields will automatically be hidden in the UI
+
 #### Pet Information Attributes:
 
 1. **petName**
@@ -173,37 +179,37 @@ Click **"Attributes"** tab, then **"Create Attribute"** for each:
    - Type: `Integer`
    - Min: `0`
    - Max: `100`
-   - Required: ✅ Yes
+   - Required: ❌ No
    - Array: ❌ No
 
 5. **gender**
    - Type: `String`
    - Size: `50`
-   - Required: ✅ Yes
+   - Required: ❌ No
    - Array: ❌ No
 
 6. **color**
    - Type: `String`
    - Size: `100`
-   - Required: ✅ Yes
+   - Required: ❌ No
    - Array: ❌ No
 
 7. **weight**
    - Type: `String`
    - Size: `50`
-   - Required: ✅ Yes
+   - Required: ❌ No
    - Array: ❌ No
 
 8. **description**
    - Type: `String`
    - Size: `1000`
-   - Required: ✅ Yes
+   - Required: ❌ No
    - Array: ❌ No
 
 9. **personality**
    - Type: `String`
    - Size: `100`
-   - Required: ✅ Yes
+   - Required: ❌ No
    - **Array: ✅ YES** (This is important!)
 
 10. **medicalInfo**
@@ -284,12 +290,21 @@ Click **"Attributes"** tab, then **"Create Attribute"** for each:
 1. **Create Your First Pet Document**
    - Go to the **"Documents"** tab in your collection
    - Click **"Create Document"**
-   - Fill in all the fields:
+   - Fill in the required fields and any optional fields you want:
 
+   **Required Fields:**
    ```
    petName: Luna
    species: Dog
    breed: Golden Retriever
+   ownerName: John Doe
+   ownerEmail: john.doe@example.com
+   ownerPhone: +1 (555) 123-4567
+   preferredContact: Email
+   ```
+
+   **Optional Fields** (add as desired):
+   ```
    age: 3
    gender: Female
    color: Golden
@@ -297,13 +312,9 @@ Click **"Attributes"** tab, then **"Create Attribute"** for each:
    description: Luna is a friendly and energetic Golden Retriever...
    personality: ["Friendly and social", "Loves to play fetch", "Great with children"]
    medicalInfo: Up to date on all vaccinations. Spayed.
-   imageUrl: (leave empty or add image URL)
+   imageUrls: (leave empty for emoji avatar, or add image URLs)
    petType: dog
-   ownerName: John Doe
-   ownerEmail: john.doe@example.com
-   ownerPhone: +1 (555) 123-4567
    ownerAddress: 123 Pet Street, Pet City, PC 12345
-   preferredContact: Email
    ```
 
 2. **Copy the Document ID**
