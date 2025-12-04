@@ -73,7 +73,7 @@ export default function PetProfile({ pet }: PetProfileProps) {
               )}
 
               {/* Details Section - Only show if at least one detail exists */}
-              {(pet.age || pet.gender || pet.color || pet.weight) && (
+              {(pet.age || pet.gender || pet.color || pet.weight || pet.microchip) && (
                 <div>
                   <h3 className="text-sm font-semibold uppercase tracking-wide text-gray-500 mb-3">Details</h3>
                   <div className="grid grid-cols-2 gap-x-8 gap-y-4">
@@ -99,6 +99,12 @@ export default function PetProfile({ pet }: PetProfileProps) {
                       <div>
                         <p className="text-sm text-gray-500">Weight</p>
                         <p className="text-base font-medium text-gray-900 mt-1">{pet.weight}</p>
+                      </div>
+                    )}
+                    {pet.microchip && (
+                      <div>
+                        <p className="text-sm text-gray-500">Microchip ID</p>
+                        <p className="text-base font-medium text-gray-900 mt-1">{pet.microchip}</p>
                       </div>
                     )}
                   </div>

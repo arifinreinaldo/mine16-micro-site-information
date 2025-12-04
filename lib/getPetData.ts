@@ -16,6 +16,7 @@ export interface AppwritePetDocument {
   description?: string;
   personality?: string[] | string; // Can be array or comma-separated string
   medicalInfo?: string;
+  microchip?: string; // Microchip ID number
   imageUrl?: string; // Deprecated: single image URL
   imageUrls?: string[] | string; // Array of image URLs or JSON stringified array
   petType?: 'dog' | 'cat' | 'other'; // Determines default avatar
@@ -105,6 +106,7 @@ export async function getPetDataByCode(code: string): Promise<PetDataResponse | 
       description: doc.description,
       personality: personality,
       medicalInfo: doc.medicalInfo,
+      microchip: doc.microchip,
       imageUrls: parseImageUrls(doc),
       petType: doc.petType
     };
@@ -159,6 +161,7 @@ export async function getPetDataById(documentId: string): Promise<PetDataRespons
       description: doc.description,
       personality: personality,
       medicalInfo: doc.medicalInfo,
+      microchip: doc.microchip,
       imageUrls: parseImageUrls(doc),
       petType: doc.petType
     };

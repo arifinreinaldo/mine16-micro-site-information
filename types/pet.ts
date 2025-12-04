@@ -9,6 +9,7 @@ export interface Pet {
   description?: string;
   personality?: string[];
   medicalInfo?: string;
+  microchip?: string; // Microchip ID number
   imageUrl?: string; // Deprecated: Use imageUrls instead
   imageUrls?: string[]; // Array of image URLs for carousel
   petType?: 'dog' | 'cat' | 'other'; // Determines default avatar
