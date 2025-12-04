@@ -14,7 +14,8 @@ export default function FoundPetForm({ petId, petName }: FoundPetFormProps) {
     message: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle");
+  const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error" | "ratelimit">("idle");
+  const [retryAfter, setRetryAfter] = useState<number>(0);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -41,6 +42,11 @@ export default function FoundPetForm({ petId, petName }: FoundPetFormProps) {
           finderPhone: "",
           message: "",
         });
+      } else if (response.status === 429) {
+        // Rate limit exceeded
+        const data = await response.json();
+        setSubmitStatus("ratelimit");
+        setRetryAfter(data.retryAfter || 15);
       } else {
         setSubmitStatus("error");
       }
@@ -137,6 +143,16 @@ export default function FoundPetForm({ petId, petName }: FoundPetFormProps) {
                 <p className="text-gray-900 font-medium text-sm">Error submitting report</p>
                 <p className="text-gray-600 text-sm mt-1">
                   Please try again or contact support if the issue persists.
+                </p>
+              </div>
+            )}
+
+            {submitStatus === "ratelimit" && (
+              <div className="bg-amber-50 border border-amber-200 p-4">
+                <p className="text-amber-900 font-medium text-sm">Too many requests</p>
+                <p className="text-amber-800 text-sm mt-1">
+                  You've reached the submission limit. Please wait {retryAfter} minutes before trying again.
+                  This helps prevent spam and ensures all reports are processed properly.
                 </p>
               </div>
             )}

@@ -679,6 +679,23 @@ All fields are required to ensure pet owners have enough information to contact 
 - Submit button with loading state
 - Success/error messages after submission
 - Automatic form reset after successful submission
+- **DDoS Protection**: Rate limiting prevents spam and abuse
+
+### Rate Limiting & Spam Protection
+
+The Found Pet Report form includes built-in DDoS protection to prevent spam and abuse:
+
+- **Limit**: 3 submissions per 15 minutes per IP address
+- **Protection**: Prevents automated bots and spam submissions
+- **User Experience**: Clear error messages when limit is reached
+- **Reset**: Automatically resets after 15 minutes
+
+If a user exceeds the limit, they'll see a friendly message explaining:
+- How many minutes to wait before trying again
+- Why the limit exists (spam prevention)
+- The submission will be available after the waiting period
+
+This ensures legitimate reports are processed while blocking malicious activity.
 
 ## Customization
 
