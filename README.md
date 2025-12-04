@@ -317,7 +317,7 @@ Click **"Attributes"** tab, then **"Create Attribute"** for each:
 
 The microsite supports multiple photos with an automatic carousel. Here's how to add them:
 
-**Note:** If you don't add any images, the microsite will automatically display a beautiful placeholder image based on your pet's type (dog, cat, or other). You can start without images and add them later!
+**Note:** If you don't add any images, the microsite will automatically display a cute emoji avatar based on your pet's type (🐕 for dog, 🐈 for cat, 🐾 for other). You can start without images and add them later!
 
 #### Option 1: Using Appwrite Storage (Recommended)
 
@@ -393,10 +393,10 @@ For testing purposes, you can use Unsplash URLs:
 - **Dot Indicators**: Shows which photo is currently displayed
 - **Image Counter**: Displays "1 / 3" in the top right
 - **Responsive**: Works perfectly on mobile and desktop
-- **Smart Placeholders**: If no images are provided, automatically shows a beautiful placeholder image based on petType:
-  - `dog` → Dog placeholder image
-  - `cat` → Cat placeholder image
-  - `other` → Generic pet placeholder image
+- **Emoji Fallback**: If no images are provided, automatically shows a cute emoji avatar based on petType:
+  - `dog` → 🐕 Dog emoji
+  - `cat` → 🐈 Cat emoji
+  - `other` → 🐾 Paw prints emoji
 
 #### Tips for Best Results
 
@@ -577,13 +577,13 @@ The microsite intelligently handles pet images:
 - Shows dot indicators and image counter
 - Supports multiple photos per pet
 
-**Without Images (Automatic Placeholders):**
-- Automatically shows a beautiful placeholder image based on `petType`:
-  - **dog**: Professional dog photo placeholder
-  - **cat**: Professional cat photo placeholder
-  - **other**: Generic pet photo placeholder
+**Without Images (Emoji Avatar Fallback):**
+- Automatically shows a cute emoji avatar based on `petType`:
+  - **dog**: 🐕 Dog emoji
+  - **cat**: 🐈 Cat emoji
+  - **other**: 🐾 Paw prints emoji
 
-Set the `petType` field in your Appwrite document to get the appropriate placeholder.
+Set the `petType` field in your Appwrite document to get the appropriate emoji avatar.
 
 ### No Parameter Behavior
 

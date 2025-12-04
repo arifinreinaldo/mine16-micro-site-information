@@ -21,20 +21,6 @@ export default function PetProfile({ pet }: PetProfileProps) {
     }
   };
 
-  // Get placeholder image based on pet type
-  const getPlaceholderImage = (): string => {
-    switch (pet.petType) {
-      case 'dog':
-        return 'https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=800&h=800&fit=crop&q=80';
-      case 'cat':
-        return 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=800&h=800&fit=crop&q=80';
-      case 'other':
-        return 'https://images.unsplash.com/photo-1425082661705-1834bfd09dca?w=800&h=800&fit=crop&q=80';
-      default:
-        return 'https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=800&h=800&fit=crop&q=80'; // Default to dog
-    }
-  };
-
   // Get images array - support both imageUrls and legacy imageUrl
   const getImages = (): string[] => {
     if (pet.imageUrls && pet.imageUrls.length > 0) {
@@ -43,11 +29,11 @@ export default function PetProfile({ pet }: PetProfileProps) {
     if (pet.imageUrl) {
       return [pet.imageUrl];
     }
-    // Return placeholder image based on pet type
-    return [getPlaceholderImage()];
+    return [];
   };
 
   const images = getImages();
+  const hasImages = images.length > 0;
 
   return (
     <div className="w-full max-w-5xl mx-auto">
@@ -65,9 +51,15 @@ export default function PetProfile({ pet }: PetProfileProps) {
         {/* Content Section */}
         <div className="p-8">
           <div className="grid md:grid-cols-3 gap-8">
-            {/* Pet Image Carousel */}
+            {/* Pet Image or Emoji Avatar */}
             <div className="md:col-span-1">
-              <ImageCarousel images={images} petName={pet.name} />
+              {hasImages ? (
+                <ImageCarousel images={images} petName={pet.name} />
+              ) : (
+                <div className="relative w-full aspect-square border border-gray-200 bg-gray-50 flex items-center justify-center">
+                  <div className="text-8xl opacity-30">{getAvatar()}</div>
+                </div>
+              )}
             </div>
 
             {/* Pet Details */}
