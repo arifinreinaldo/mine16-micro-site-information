@@ -317,6 +317,8 @@ Click **"Attributes"** tab, then **"Create Attribute"** for each:
 
 The microsite supports multiple photos with an automatic carousel. Here's how to add them:
 
+**Note:** If you don't add any images, the microsite will automatically display a beautiful placeholder image based on your pet's type (dog, cat, or other). You can start without images and add them later!
+
 #### Option 1: Using Appwrite Storage (Recommended)
 
 1. **Create a Storage Bucket**
@@ -391,7 +393,10 @@ For testing purposes, you can use Unsplash URLs:
 - **Dot Indicators**: Shows which photo is currently displayed
 - **Image Counter**: Displays "1 / 3" in the top right
 - **Responsive**: Works perfectly on mobile and desktop
-- **Fallback**: If no images are provided, shows a cute emoji avatar based on petType
+- **Smart Placeholders**: If no images are provided, automatically shows a beautiful placeholder image based on petType:
+  - `dog` → Dog placeholder image
+  - `cat` → Cat placeholder image
+  - `other` → Generic pet placeholder image
 
 #### Tips for Best Results
 
@@ -563,14 +568,22 @@ https://your-domain.com/?param=673abc123def456
 https://your-domain.com/?param=AIBO (demo)
 ```
 
-### Avatar Types
+### Image Display
 
-The microsite displays different avatars based on the `petType` field:
-- **dog**: 🐕 Dog emoji
-- **cat**: 🐈 Cat emoji
-- **other**: 🐾 Paw prints emoji
+The microsite intelligently handles pet images:
 
-Set the `petType` field in your Appwrite document to customize the avatar.
+**With Images:**
+- Displays an image carousel with navigation arrows
+- Shows dot indicators and image counter
+- Supports multiple photos per pet
+
+**Without Images (Automatic Placeholders):**
+- Automatically shows a beautiful placeholder image based on `petType`:
+  - **dog**: Professional dog photo placeholder
+  - **cat**: Professional cat photo placeholder
+  - **other**: Generic pet photo placeholder
+
+Set the `petType` field in your Appwrite document to get the appropriate placeholder.
 
 ### No Parameter Behavior
 
