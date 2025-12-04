@@ -2,12 +2,12 @@ export interface Pet {
   name: string;
   species: string;
   breed: string;
-  age: number;
-  gender: string;
-  color: string;
-  weight: string;
-  description: string;
-  personality: string[];
+  age?: number;
+  gender?: string;
+  color?: string;
+  weight?: string;
+  description?: string;
+  personality?: string[];
   medicalInfo?: string;
   imageUrl?: string; // Deprecated: Use imageUrls instead
   imageUrls?: string[]; // Array of image URLs for carousel

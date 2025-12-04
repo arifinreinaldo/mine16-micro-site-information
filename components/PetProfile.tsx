@@ -64,47 +64,63 @@ export default function PetProfile({ pet }: PetProfileProps) {
 
             {/* Pet Details */}
             <div className="md:col-span-2 space-y-8">
-              <div>
-                <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-500 mb-3">About</h2>
-                <p className="text-gray-700 leading-relaxed text-base">{pet.description}</p>
-              </div>
+              {/* About Section - Only show if description exists */}
+              {pet.description && (
+                <div>
+                  <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-500 mb-3">About</h2>
+                  <p className="text-gray-700 leading-relaxed text-base">{pet.description}</p>
+                </div>
+              )}
 
-              <div>
-                <h3 className="text-sm font-semibold uppercase tracking-wide text-gray-500 mb-3">Details</h3>
-                <div className="grid grid-cols-2 gap-x-8 gap-y-4">
-                  <div>
-                    <p className="text-sm text-gray-500">Age</p>
-                    <p className="text-base font-medium text-gray-900 mt-1">{pet.age} years</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-gray-500">Gender</p>
-                    <p className="text-base font-medium text-gray-900 mt-1">{pet.gender}</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-gray-500">Color</p>
-                    <p className="text-base font-medium text-gray-900 mt-1">{pet.color}</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-gray-500">Weight</p>
-                    <p className="text-base font-medium text-gray-900 mt-1">{pet.weight}</p>
+              {/* Details Section - Only show if at least one detail exists */}
+              {(pet.age || pet.gender || pet.color || pet.weight) && (
+                <div>
+                  <h3 className="text-sm font-semibold uppercase tracking-wide text-gray-500 mb-3">Details</h3>
+                  <div className="grid grid-cols-2 gap-x-8 gap-y-4">
+                    {pet.age && (
+                      <div>
+                        <p className="text-sm text-gray-500">Age</p>
+                        <p className="text-base font-medium text-gray-900 mt-1">{pet.age} years</p>
+                      </div>
+                    )}
+                    {pet.gender && (
+                      <div>
+                        <p className="text-sm text-gray-500">Gender</p>
+                        <p className="text-base font-medium text-gray-900 mt-1">{pet.gender}</p>
+                      </div>
+                    )}
+                    {pet.color && (
+                      <div>
+                        <p className="text-sm text-gray-500">Color</p>
+                        <p className="text-base font-medium text-gray-900 mt-1">{pet.color}</p>
+                      </div>
+                    )}
+                    {pet.weight && (
+                      <div>
+                        <p className="text-sm text-gray-500">Weight</p>
+                        <p className="text-base font-medium text-gray-900 mt-1">{pet.weight}</p>
+                      </div>
+                    )}
                   </div>
                 </div>
-              </div>
+              )}
 
-              {/* Personality Traits */}
-              <div>
-                <h3 className="text-sm font-semibold uppercase tracking-wide text-gray-500 mb-3">Personality</h3>
-                <ul className="space-y-2">
-                  {pet.personality.map((trait, index) => (
-                    <li key={index} className="text-base text-gray-700 flex items-start">
-                      <span className="text-gray-400 mr-2">•</span>
-                      <span>{trait}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
+              {/* Personality Traits - Only show if personality array has items */}
+              {pet.personality && pet.personality.length > 0 && (
+                <div>
+                  <h3 className="text-sm font-semibold uppercase tracking-wide text-gray-500 mb-3">Personality</h3>
+                  <ul className="space-y-2">
+                    {pet.personality.map((trait, index) => (
+                      <li key={index} className="text-base text-gray-700 flex items-start">
+                        <span className="text-gray-400 mr-2">•</span>
+                        <span>{trait}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
 
-              {/* Medical Info */}
+              {/* Medical Info - Only show if exists */}
               {pet.medicalInfo && (
                 <div>
                   <h3 className="text-sm font-semibold uppercase tracking-wide text-gray-500 mb-3">Medical Information</h3>

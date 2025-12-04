@@ -9,12 +9,12 @@ export interface AppwritePetDocument {
   petName: string;
   species: string;
   breed: string;
-  age: number;
-  gender: string;
-  color: string;
-  weight: string;
-  description: string;
-  personality: string[] | string; // Can be array or comma-separated string
+  age?: number;
+  gender?: string;
+  color?: string;
+  weight?: string;
+  description?: string;
+  personality?: string[] | string; // Can be array or comma-separated string
   medicalInfo?: string;
   imageUrl?: string; // Deprecated: single image URL
   imageUrls?: string[] | string; // Array of image URLs or JSON stringified array
@@ -79,16 +79,18 @@ export async function getPetDataByCode(code: string): Promise<PetDataResponse | 
     // Get the first matching document
     const doc = response.documents[0] as unknown as AppwritePetDocument;
 
-    // Parse personality if it's a string
-    let personality: string[] = [];
-    if (typeof doc.personality === 'string') {
-      try {
-        personality = JSON.parse(doc.personality);
-      } catch {
-        personality = doc.personality.split(',').map(p => p.trim());
+    // Parse personality if it exists
+    let personality: string[] | undefined = undefined;
+    if (doc.personality) {
+      if (typeof doc.personality === 'string') {
+        try {
+          personality = JSON.parse(doc.personality);
+        } catch {
+          personality = doc.personality.split(',').map(p => p.trim());
+        }
+      } else {
+        personality = doc.personality;
       }
-    } else {
-      personality = doc.personality;
     }
 
     // Transform Appwrite document to our Pet and Owner types
@@ -131,16 +133,18 @@ export async function getPetDataById(documentId: string): Promise<PetDataRespons
       documentId
     ) as unknown as AppwritePetDocument;
 
-    // Parse personality if it's a string
-    let personality: string[] = [];
-    if (typeof doc.personality === 'string') {
-      try {
-        personality = JSON.parse(doc.personality);
-      } catch {
-        personality = doc.personality.split(',').map(p => p.trim());
+    // Parse personality if it exists
+    let personality: string[] | undefined = undefined;
+    if (doc.personality) {
+      if (typeof doc.personality === 'string') {
+        try {
+          personality = JSON.parse(doc.personality);
+        } catch {
+          personality = doc.personality.split(',').map(p => p.trim());
+        }
+      } else {
+        personality = doc.personality;
       }
-    } else {
-      personality = doc.personality;
     }
 
     // Transform Appwrite document to our Pet and Owner types
