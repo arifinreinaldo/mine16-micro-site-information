@@ -414,6 +414,41 @@ To add additional pets to your microsite:
 
 Each pet gets its own unique URL based on its Document ID!
 
+### Setting Up Found Pets Collection (Optional)
+
+To enable the "Found Pet Report" feature, create a second collection for storing found pet reports:
+
+1. **Create Found Pets Collection**
+   - In your Appwrite database, click **"Create Collection"**
+   - Name it: `found_pets` (or any name you prefer)
+   - Click **"Create"**
+   - Copy the Collection ID
+
+2. **Add Attributes to Found Pets Collection**
+
+   Click **"Attributes"** tab, then create these attributes:
+
+   1. **petId** - String, Size: 100, Required: Yes
+   2. **petName** - String, Size: 255, Required: Yes
+   3. **finderName** - String, Size: 255, Required: Yes
+   4. **finderEmail** - String, Size: 255, Required: Yes
+   5. **finderPhone** - String, Size: 50, Required: Yes
+   6. **location** - String, Size: 500, Required: Yes
+   7. **message** - String, Size: 1000, Required: No
+   8. **status** - String, Size: 20, Required: Yes (values: pending, contacted, resolved)
+   9. **reportedAt** - String, Size: 50, Required: Yes
+
+3. **Configure Permissions**
+   - Click **"Settings"** tab
+   - Add **"Create"** permission for **"Any"** role (allows public to submit reports)
+   - Add **"Read"** permission for role with owner access only
+
+4. **Update Environment Variables**
+   - Add to your `.env.local` file:
+     ```
+     NEXT_PUBLIC_APPWRITE_FOUND_PETS_COLLECTION_ID=your_found_pets_collection_id
+     ```
+
 ## Usage
 
 ### Demo Profile

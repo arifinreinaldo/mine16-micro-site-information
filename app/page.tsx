@@ -1,5 +1,5 @@
 import PetProfile from "@/components/PetProfile";
-import ContactSection from "@/components/ContactSection";
+import FoundPetForm from "@/components/FoundPetForm";
 import { petInfo, ownerInfo, aiboInfo, aiboOwner } from "@/data/petData";
 import { getPetDataById } from "@/lib/getPetData";
 
@@ -76,7 +76,7 @@ export default async function Home({ searchParams }: HomeProps) {
             </p>
           </div>
           <PetProfile pet={pet} />
-          <ContactSection owner={owner} />
+          <FoundPetForm petId="AIBO" petName={pet.name} />
         </main>
       </div>
     );
@@ -130,7 +130,7 @@ export default async function Home({ searchParams }: HomeProps) {
       {/* Main Content */}
       <main className="max-w-6xl mx-auto px-4 py-12 pb-16">
         <PetProfile pet={pet} />
-        <ContactSection owner={owner} />
+        <FoundPetForm petId={petId} petName={pet.name} />
       </main>
     </div>
   );
