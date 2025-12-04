@@ -9,7 +9,8 @@ export interface Pet {
   description: string;
   personality: string[];
   medicalInfo?: string;
-  imageUrl: string;
+  imageUrl?: string; // Deprecated: Use imageUrls instead
+  imageUrls?: string[]; // Array of image URLs for carousel
   petType?: 'dog' | 'cat' | 'other'; // Determines default avatar
 }
 

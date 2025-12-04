@@ -18,7 +18,11 @@ export const aiboInfo: Pet = {
     "Great for all ages"
   ],
   medicalInfo: "No medical needs. Requires regular charging and software updates.",
-  imageUrl: "/aibo-image.jpg",
+  imageUrls: [
+    "https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=800&h=800&fit=crop",
+    "https://images.unsplash.com/photo-1561037404-61cd46aa615b?w=800&h=800&fit=crop",
+    "https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?w=800&h=800&fit=crop"
+  ],
   petType: "dog"
 };
 
@@ -48,7 +52,10 @@ export const petInfo: Pet = {
     "Energetic and playful"
   ],
   medicalInfo: "Up to date on all vaccinations. Spayed. Regular vet check-ups.",
-  imageUrl: "/pet-image.jpg",
+  imageUrls: [
+    "https://images.unsplash.com/photo-1633722715463-d30f4f325e24?w=800&h=800&fit=crop",
+    "https://images.unsplash.com/photo-1598133894008-61f7fdb8cc3a?w=800&h=800&fit=crop"
+  ],
   petType: "dog"
 };
 

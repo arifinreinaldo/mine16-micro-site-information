@@ -16,7 +16,8 @@ export interface AppwritePetDocument {
   description: string;
   personality: string[] | string; // Can be array or comma-separated string
   medicalInfo?: string;
-  imageUrl?: string;
+  imageUrl?: string; // Deprecated: single image URL
+  imageUrls?: string[] | string; // Array of image URLs or JSON stringified array
   petType?: 'dog' | 'cat' | 'other'; // Determines default avatar
   // Owner fields
   ownerName: string;
@@ -29,6 +30,33 @@ export interface AppwritePetDocument {
 export interface PetDataResponse {
   pet: Pet;
   owner: Owner;
+}
+
+// Helper function to parse imageUrls from Appwrite
+function parseImageUrls(doc: AppwritePetDocument): string[] | undefined {
+  // First check for imageUrls (new field)
+  if (doc.imageUrls) {
+    if (Array.isArray(doc.imageUrls)) {
+      return doc.imageUrls;
+    }
+    // If it's a string, try to parse as JSON
+    if (typeof doc.imageUrls === 'string') {
+      try {
+        const parsed = JSON.parse(doc.imageUrls);
+        if (Array.isArray(parsed)) {
+          return parsed;
+        }
+      } catch {
+        // If JSON parse fails, treat as comma-separated
+        return doc.imageUrls.split(',').map(url => url.trim()).filter(url => url);
+      }
+    }
+  }
+  // Fall back to single imageUrl for backwards compatibility
+  if (doc.imageUrl) {
+    return [doc.imageUrl];
+  }
+  return undefined;
 }
 
 export async function getPetDataByCode(code: string): Promise<PetDataResponse | null> {
@@ -75,7 +103,7 @@ export async function getPetDataByCode(code: string): Promise<PetDataResponse | 
       description: doc.description,
       personality: personality,
       medicalInfo: doc.medicalInfo,
-      imageUrl: doc.imageUrl || '/pet-image.jpg',
+      imageUrls: parseImageUrls(doc),
       petType: doc.petType
     };
 
@@ -127,7 +155,7 @@ export async function getPetDataById(documentId: string): Promise<PetDataRespons
       description: doc.description,
       personality: personality,
       medicalInfo: doc.medicalInfo,
-      imageUrl: doc.imageUrl || '/pet-image.jpg',
+      imageUrls: parseImageUrls(doc),
       petType: doc.petType
     };
 

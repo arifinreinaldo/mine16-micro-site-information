@@ -5,6 +5,7 @@ A beautiful and responsive microsite built with Next.js and Tailwind CSS to show
 ## Features
 
 - **Dynamic Data Loading**: Integrated with Appwrite to fetch pet data dynamically via URL parameters
+- **Image Carousel**: Support for multiple pet photos with automatic carousel navigation
 - **Found Pet Report Form**: Allow finders to submit reports when they find a pet, notifying the owner
 - Modern, responsive design with gradient backgrounds
 - Detailed pet profile with personality traits
@@ -30,6 +31,7 @@ A beautiful and responsive microsite built with Next.js and Tailwind CSS to show
 │           └── route.ts  # API route for found pet submissions
 ├── components/
 │   ├── PetProfile.tsx    # Pet profile component
+│   ├── ImageCarousel.tsx # Image carousel for multiple photos
 │   ├── ContactSection.tsx # Owner contact component (deprecated)
 │   └── FoundPetForm.tsx  # Found pet report form
 ├── lib/
@@ -215,8 +217,16 @@ Click **"Attributes"** tab, then **"Create Attribute"** for each:
     - Size: `500`
     - Required: ❌ No
     - Array: ❌ No
+    - **Note:** Deprecated - Use `imageUrls` for better multi-image support
 
-12. **petType**
+12. **imageUrls**
+    - Type: `String`
+    - Size: `2000`
+    - Required: ❌ No
+    - Array: ✅ YES (This allows multiple photos!)
+    - **Note:** Store multiple image URLs for carousel display
+
+13. **petType**
     - Type: `String` (enum)
     - Size: `20`
     - Required: ❌ No
@@ -226,31 +236,31 @@ Click **"Attributes"** tab, then **"Create Attribute"** for each:
 
 #### Owner Information Attributes:
 
-13. **ownerName**
+14. **ownerName**
     - Type: `String`
     - Size: `255`
     - Required: ✅ Yes
     - Array: ❌ No
 
-14. **ownerEmail**
+15. **ownerEmail**
     - Type: `String`
     - Size: `255`
     - Required: ✅ Yes
     - Array: ❌ No
 
-15. **ownerPhone**
+16. **ownerPhone**
     - Type: `String`
     - Size: `50`
     - Required: ✅ Yes
     - Array: ❌ No
 
-16. **ownerAddress**
+17. **ownerAddress**
     - Type: `String`
     - Size: `500`
     - Required: ❌ No
     - Array: ❌ No
 
-17. **preferredContact**
+18. **preferredContact**
     - Type: `String`
     - Size: `50`
     - Required: ✅ Yes
@@ -302,6 +312,94 @@ Click **"Attributes"** tab, then **"Create Attribute"** for each:
    - **Copy the Document ID** (found at the top)
    - It looks like: `6745mno123pqr456789`
    - This ID is what you'll use in your URL: `?param=6745mno123pqr456789`
+
+### Step 7A: Adding Photos to Your Pet Profile
+
+The microsite supports multiple photos with an automatic carousel. Here's how to add them:
+
+#### Option 1: Using Appwrite Storage (Recommended)
+
+1. **Create a Storage Bucket**
+   - In your Appwrite project, click **"Storage"** in the left sidebar
+   - Click **"Create Bucket"**
+   - Name it: `pet-images`
+   - Click **"Create"**
+
+2. **Configure Bucket Permissions**
+   - Click on your new bucket
+   - Go to **"Settings"** tab
+   - Under **"Permissions"**, add **"Read"** permission for **"Any"** role
+   - This allows public access to view images
+
+3. **Upload Pet Photos**
+   - Go to the **"Files"** tab in your bucket
+   - Click **"Upload File"**
+   - Select your pet photos (JPG, PNG, etc.)
+   - Upload as many photos as you want (recommended: 2-5 photos)
+
+4. **Get Image URLs**
+   - After uploading, click on each image
+   - Click the **"View"** button or copy the file URL
+   - The URL format is: `https://cloud.appwrite.io/v1/storage/buckets/[BUCKET_ID]/files/[FILE_ID]/view?project=[PROJECT_ID]`
+   - Copy each URL
+
+5. **Add URLs to Your Pet Document**
+   - Go back to **Databases** → Your collection → Your pet document
+   - Click **"Update Document"**
+   - In the `imageUrls` field (array), add each URL as a separate item:
+     ```
+     [
+       "https://cloud.appwrite.io/v1/storage/buckets/pet-images/files/abc123/view?project=xyz",
+       "https://cloud.appwrite.io/v1/storage/buckets/pet-images/files/def456/view?project=xyz",
+       "https://cloud.appwrite.io/v1/storage/buckets/pet-images/files/ghi789/view?project=xyz"
+     ]
+     ```
+   - Click **"Update"**
+
+#### Option 2: Using External Image URLs (Imgur, Cloudinary, etc.)
+
+1. **Upload to Image Host**
+   - Use a service like [Imgur](https://imgur.com), [Cloudinary](https://cloudinary.com), or any image hosting service
+   - Upload your pet photos
+   - Copy the direct image URLs
+
+2. **Add to Appwrite**
+   - In your pet document, update the `imageUrls` array field
+   - Add each image URL as a separate array item:
+     ```
+     [
+       "https://i.imgur.com/abc123.jpg",
+       "https://i.imgur.com/def456.jpg",
+       "https://i.imgur.com/ghi789.jpg"
+     ]
+     ```
+
+#### Option 3: Using Unsplash (For Demo/Testing)
+
+For testing purposes, you can use Unsplash URLs:
+```
+[
+  "https://images.unsplash.com/photo-1234567890?w=800&h=800&fit=crop",
+  "https://images.unsplash.com/photo-0987654321?w=800&h=800&fit=crop"
+]
+```
+
+#### Image Carousel Features
+
+- **Multiple Photos**: Upload 2-10 photos for the best experience
+- **Navigation**: Users can click left/right arrows to browse photos
+- **Dot Indicators**: Shows which photo is currently displayed
+- **Image Counter**: Displays "1 / 3" in the top right
+- **Responsive**: Works perfectly on mobile and desktop
+- **Fallback**: If no images are provided, shows a cute emoji avatar based on petType
+
+#### Tips for Best Results
+
+- **Image Size**: Use images at least 800x800px for quality
+- **Aspect Ratio**: Square images (1:1) work best
+- **File Size**: Keep images under 2MB for fast loading
+- **Variety**: Include different angles, close-ups, and action shots
+- **Quality**: Use clear, well-lit photos
 
 ### Step 8: Configure Your Application
 

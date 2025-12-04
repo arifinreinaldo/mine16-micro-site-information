@@ -1,5 +1,6 @@
 import { Pet } from "@/types/pet";
 import Image from "next/image";
+import ImageCarousel from "./ImageCarousel";
 
 interface PetProfileProps {
   pet: Pet;
@@ -20,6 +21,20 @@ export default function PetProfile({ pet }: PetProfileProps) {
     }
   };
 
+  // Get images array - support both imageUrls and legacy imageUrl
+  const getImages = (): string[] => {
+    if (pet.imageUrls && pet.imageUrls.length > 0) {
+      return pet.imageUrls;
+    }
+    if (pet.imageUrl) {
+      return [pet.imageUrl];
+    }
+    return [];
+  };
+
+  const images = getImages();
+  const hasImages = images.length > 0;
+
   return (
     <div className="w-full max-w-5xl mx-auto">
       <div className="bg-white border border-gray-200 shadow-sm overflow-hidden">
@@ -36,11 +51,15 @@ export default function PetProfile({ pet }: PetProfileProps) {
         {/* Content Section */}
         <div className="p-8">
           <div className="grid md:grid-cols-3 gap-8">
-            {/* Pet Image */}
+            {/* Pet Image or Avatar */}
             <div className="md:col-span-1">
-              <div className="relative w-full aspect-square border border-gray-200 bg-gray-50 flex items-center justify-center">
-                <div className="text-8xl opacity-30">{getAvatar()}</div>
-              </div>
+              {hasImages ? (
+                <ImageCarousel images={images} petName={pet.name} />
+              ) : (
+                <div className="relative w-full aspect-square border border-gray-200 bg-gray-50 flex items-center justify-center">
+                  <div className="text-8xl opacity-30">{getAvatar()}</div>
+                </div>
+              )}
             </div>
 
             {/* Pet Details */}
