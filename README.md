@@ -606,15 +606,15 @@ The microsite includes a "Found Pet Report" form that allows people who find a l
 
 ### How It Works
 
-1. **Finder Submits Report**: When someone finds a pet, they can fill out the form with:
+1. **Finder Submits Report**: When someone finds a pet, they can fill out the simple form with:
    - Their name
    - Their phone number
-   - Description of where/when they found the pet
+   - Description (where/when they found the pet)
 
 2. **Data Stored in Appwrite**: The report is submitted to a separate Appwrite collection (`found_pets`) with:
    - Pet ID and name
-   - Finder's contact information
-   - Location and description
+   - Finder's name and phone
+   - Description message
    - Timestamp and status
 
 3. **Owner Access**: Pet owners can view submitted reports by accessing their Appwrite database directly
@@ -631,11 +631,9 @@ To enable this feature, you need to create a second collection in Appwrite:
    - `petId` - String, Size: 100, Required
    - `petName` - String, Size: 255, Required
    - `finderName` - String, Size: 255, Required
-   - `finderEmail` - String, Size: 255, Required
    - `finderPhone` - String, Size: 50, Required
-   - `location` - String, Size: 500, Required
-   - `message` - String, Size: 1000, Optional
-   - `status` - String, Size: 20, Required (values: `pending`, `contacted`, `resolved`)
+   - `message` - String, Size: 1000, Required
+   - `status` - String, Size: 20, Required (default: `pending`, values: `pending`, `contacted`, `resolved`)
    - `reportedAt` - String, Size: 50, Required
 
 3. **Configure Permissions**
@@ -666,10 +664,18 @@ To view submitted reports:
 4. View all submitted reports with finder contact information
 5. Update the `status` field as you process each report (`pending` → `contacted` → `resolved`)
 
-### Form Validation
+### Form Fields
 
-The form includes:
-- Required field validation (name, phone, description)
+The form is simple and quick to fill out:
+- **Your Name** - Finder's name (required)
+- **Your Phone** - Finder's phone number (required)
+- **Description** - Details about where/when the pet was found (required)
+
+All fields are required to ensure pet owners have enough information to contact and retrieve their pet.
+
+### Form Features
+
+- Required field validation
 - Submit button with loading state
 - Success/error messages after submission
 - Automatic form reset after successful submission

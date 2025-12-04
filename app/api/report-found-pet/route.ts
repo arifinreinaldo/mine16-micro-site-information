@@ -8,10 +8,10 @@ const FOUND_PETS_COLLECTION_ID = process.env.NEXT_PUBLIC_APPWRITE_FOUND_PETS_COL
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { petId, petName, finderName, finderEmail, finderPhone, location, message } = body;
+    const { petId, petName, finderName, finderPhone, message } = body;
 
     // Validate required fields
-    if (!petId || !petName || !finderName || !finderEmail || !finderPhone || !location) {
+    if (!petId || !petName || !finderName || !finderPhone || !message) {
       return NextResponse.json(
         { error: "Missing required fields" },
         { status: 400 }
@@ -27,10 +27,8 @@ export async function POST(request: NextRequest) {
         petId,
         petName,
         finderName,
-        finderEmail,
         finderPhone,
-        location,
-        message: message || "",
+        message,
         status: "pending",
         reportedAt: new Date().toISOString(),
       }
