@@ -5,6 +5,7 @@ A beautiful and responsive microsite built with Next.js and Tailwind CSS to show
 ## Features
 
 - **Dynamic Data Loading**: Integrated with Appwrite to fetch pet data dynamically via URL parameters
+- **Found Pet Report Form**: Allow finders to submit reports when they find a pet, notifying the owner
 - Modern, responsive design with gradient backgrounds
 - Detailed pet profile with personality traits
 - Medical information display
@@ -23,10 +24,14 @@ A beautiful and responsive microsite built with Next.js and Tailwind CSS to show
 │   ├── page.tsx          # Main page component (with Appwrite integration)
 │   ├── loading.tsx       # Loading state component
 │   ├── layout.tsx        # Root layout with metadata
-│   └── globals.css       # Global styles
+│   ├── globals.css       # Global styles
+│   └── api/
+│       └── report-found-pet/
+│           └── route.ts  # API route for found pet submissions
 ├── components/
 │   ├── PetProfile.tsx    # Pet profile component
-│   └── ContactSection.tsx # Owner contact component
+│   ├── ContactSection.tsx # Owner contact component (deprecated)
+│   └── FoundPetForm.tsx  # Found pet report form
 ├── lib/
 │   ├── appwrite.ts       # Appwrite client configuration
 │   └── getPetData.ts     # Functions to fetch pet data from Appwrite
@@ -69,6 +74,7 @@ NEXT_PUBLIC_APPWRITE_ENDPOINT=https://cloud.appwrite.io/v1
 NEXT_PUBLIC_APPWRITE_PROJECT_ID=your_project_id
 NEXT_PUBLIC_APPWRITE_DATABASE_ID=your_database_id
 NEXT_PUBLIC_APPWRITE_COLLECTION_ID=your_collection_id
+NEXT_PUBLIC_APPWRITE_FOUND_PETS_COLLECTION_ID=your_found_pets_collection_id  # Optional: for Found Pet Reports
 ```
 
 4. Run the development server:
@@ -319,6 +325,7 @@ Click **"Attributes"** tab, then **"Create Attribute"** for each:
    NEXT_PUBLIC_APPWRITE_PROJECT_ID=6745abc123def456789
    NEXT_PUBLIC_APPWRITE_DATABASE_ID=6745xyz123abc456789
    NEXT_PUBLIC_APPWRITE_COLLECTION_ID=6745qrs123tuv456789
+   NEXT_PUBLIC_APPWRITE_FOUND_PETS_COLLECTION_ID=6745def456ghi789012  # Optional
    ```
 
 ### Step 9: Test Your Connection
@@ -358,11 +365,13 @@ Click **"Attributes"** tab, then **"Create Attribute"** for each:
    - Import your repository
    - **Before deploying**, add environment variables:
      - Click "Environment Variables"
-     - Add all four variables:
+     - Add required variables:
        - `NEXT_PUBLIC_APPWRITE_ENDPOINT`
        - `NEXT_PUBLIC_APPWRITE_PROJECT_ID`
        - `NEXT_PUBLIC_APPWRITE_DATABASE_ID`
        - `NEXT_PUBLIC_APPWRITE_COLLECTION_ID`
+     - Add optional variable (if using Found Pet Reports):
+       - `NEXT_PUBLIC_APPWRITE_FOUND_PETS_COLLECTION_ID`
      - Use the same values from your `.env.local`
    - Click "Deploy"
 
@@ -416,38 +425,15 @@ Each pet gets its own unique URL based on its Document ID!
 
 ### Setting Up Found Pets Collection (Optional)
 
-To enable the "Found Pet Report" feature, create a second collection for storing found pet reports:
+To enable the "Found Pet Report" feature, you'll need to create a second collection for storing found pet reports.
 
-1. **Create Found Pets Collection**
-   - In your Appwrite database, click **"Create Collection"**
-   - Name it: `found_pets` (or any name you prefer)
-   - Click **"Create"**
-   - Copy the Collection ID
+**Quick Setup:**
+1. Create a new collection named `found_pets` in your Appwrite database
+2. Add the required attributes (see detailed instructions in the [Found Pet Report Feature](#found-pet-report-feature) section)
+3. Configure permissions to allow public submissions
+4. Add the collection ID to your environment variables
 
-2. **Add Attributes to Found Pets Collection**
-
-   Click **"Attributes"** tab, then create these attributes:
-
-   1. **petId** - String, Size: 100, Required: Yes
-   2. **petName** - String, Size: 255, Required: Yes
-   3. **finderName** - String, Size: 255, Required: Yes
-   4. **finderEmail** - String, Size: 255, Required: Yes
-   5. **finderPhone** - String, Size: 50, Required: Yes
-   6. **location** - String, Size: 500, Required: Yes
-   7. **message** - String, Size: 1000, Required: No
-   8. **status** - String, Size: 20, Required: Yes (values: pending, contacted, resolved)
-   9. **reportedAt** - String, Size: 50, Required: Yes
-
-3. **Configure Permissions**
-   - Click **"Settings"** tab
-   - Add **"Create"** permission for **"Any"** role (allows public to submit reports)
-   - Add **"Read"** permission for role with owner access only
-
-4. **Update Environment Variables**
-   - Add to your `.env.local` file:
-     ```
-     NEXT_PUBLIC_APPWRITE_FOUND_PETS_COLLECTION_ID=your_found_pets_collection_id
-     ```
+For complete setup instructions, see the **[Found Pet Report Feature](#found-pet-report-feature)** section below.
 
 ## Usage
 
@@ -491,6 +477,80 @@ Set the `petType` field in your Appwrite document to customize the avatar.
 ### No Parameter Behavior
 
 If no `param` is provided in the URL, the site will display a "No Data Detected" message with instructions on how to use the microsite and a link to the demo profile.
+
+## Found Pet Report Feature
+
+The microsite includes a "Found Pet Report" form that allows people who find a lost pet to quickly notify the owner. This feature is displayed below the pet profile on every pet page.
+
+### How It Works
+
+1. **Finder Submits Report**: When someone finds a pet, they can fill out the form with:
+   - Their name
+   - Their phone number
+   - Description of where/when they found the pet
+
+2. **Data Stored in Appwrite**: The report is submitted to a separate Appwrite collection (`found_pets`) with:
+   - Pet ID and name
+   - Finder's contact information
+   - Location and description
+   - Timestamp and status
+
+3. **Owner Access**: Pet owners can view submitted reports by accessing their Appwrite database directly
+
+### Setting Up Found Pet Reports
+
+To enable this feature, you need to create a second collection in Appwrite:
+
+1. **Create the Collection**
+   - In your Appwrite database, create a new collection named `found_pets`
+   - Copy the Collection ID
+
+2. **Add Required Attributes**:
+   - `petId` - String, Size: 100, Required
+   - `petName` - String, Size: 255, Required
+   - `finderName` - String, Size: 255, Required
+   - `finderEmail` - String, Size: 255, Required
+   - `finderPhone` - String, Size: 50, Required
+   - `location` - String, Size: 500, Required
+   - `message` - String, Size: 1000, Optional
+   - `status` - String, Size: 20, Required (values: `pending`, `contacted`, `resolved`)
+   - `reportedAt` - String, Size: 50, Required
+
+3. **Configure Permissions**
+   - Add **"Create"** permission for **"Any"** role (allows public submissions)
+   - Add **"Read"** permission for authenticated users/owners only
+
+4. **Add Environment Variable**
+
+   Update your `.env.local` file:
+   ```env
+   NEXT_PUBLIC_APPWRITE_FOUND_PETS_COLLECTION_ID=your_found_pets_collection_id
+   ```
+
+5. **Deploy with Variables**
+
+   If deploying to Vercel, add the environment variable:
+   - Go to Project Settings → Environment Variables
+   - Add `NEXT_PUBLIC_APPWRITE_FOUND_PETS_COLLECTION_ID`
+   - Redeploy the application
+
+### Viewing Found Pet Reports
+
+To view submitted reports:
+
+1. Log into your Appwrite console
+2. Navigate to Databases → Your Database → `found_pets` collection
+3. Click on the **Documents** tab
+4. View all submitted reports with finder contact information
+5. Update the `status` field as you process each report (`pending` → `contacted` → `resolved`)
+
+### Form Validation
+
+The form includes:
+- Required field validation (name, phone, description)
+- Submit button with loading state
+- Success/error messages after submission
+- Automatic form reset after successful submission
 
 ## Customization
 
