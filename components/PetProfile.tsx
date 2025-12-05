@@ -14,6 +14,8 @@ export default function PetProfile({ pet }: PetProfileProps) {
         return '🐕';
       case 'cat':
         return '🐈';
+      case 'bird':
+        return '🦜';
       case 'other':
         return '🐾';
       default:
@@ -21,19 +23,14 @@ export default function PetProfile({ pet }: PetProfileProps) {
     }
   };
 
-  // Get images array - support both imageUrls and legacy imageUrl
-  const getImages = (): string[] => {
-    if (pet.imageUrls && pet.imageUrls.length > 0) {
-      return pet.imageUrls;
-    }
-    if (pet.imageUrl) {
-      return [pet.imageUrl];
-    }
-    return [];
-  };
-
-  const images = getImages();
+  // Get images array
+  const images = pet.imageUrls || [];
   const hasImages = images.length > 0;
+
+  // Parse personality from comma-separated string
+  const personalityTraits = pet.personality
+    ? pet.personality.split(',').map(trait => trait.trim()).filter(Boolean)
+    : [];
 
   return (
     <div className="w-full max-w-5xl mx-auto">
@@ -45,7 +42,6 @@ export default function PetProfile({ pet }: PetProfileProps) {
             <span className="text-lg text-gray-500">•</span>
             <p className="text-lg text-gray-600">{pet.breed}</p>
           </div>
-          <p className="text-base text-gray-500 mt-1">{pet.species}</p>
         </div>
 
         {/* Content Section */}
@@ -111,12 +107,12 @@ export default function PetProfile({ pet }: PetProfileProps) {
                 </div>
               )}
 
-              {/* Personality Traits - Only show if personality array has items */}
-              {pet.personality && pet.personality.length > 0 && (
+              {/* Personality Traits - Only show if personality has items */}
+              {personalityTraits.length > 0 && (
                 <div>
                   <h3 className="text-sm font-semibold uppercase tracking-wide text-gray-500 mb-3">Personality</h3>
                   <ul className="space-y-2">
-                    {pet.personality.map((trait, index) => (
+                    {personalityTraits.map((trait, index) => (
                       <li key={index} className="text-base text-gray-700 flex items-start">
                         <span className="text-gray-400 mr-2">•</span>
                         <span>{trait}</span>

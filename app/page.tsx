@@ -1,6 +1,6 @@
 import PetProfile from "@/components/PetProfile";
 import FoundPetForm from "@/components/FoundPetForm";
-import { petInfo, ownerInfo, aiboInfo, aiboOwner } from "@/data/petData";
+import { aiboInfo } from "@/data/petData";
 import { getPetDataById } from "@/lib/getPetData";
 import type { Metadata } from "next";
 
@@ -45,7 +45,7 @@ export async function generateMetadata({ searchParams }: HomeProps): Promise<Met
   return {
     title: `Pet Information Hub | ${pet.name}'s Profile`,
     description: `Welcome to ${pet.name}'s pet profile. Get to know our ${pet.breed} and find owner contact information.`,
-    keywords: ["pet", pet.species.toLowerCase(), pet.breed.toLowerCase(), "pet profile", "contact owner"],
+    keywords: ["pet", pet.petType.toLowerCase(), pet.breed.toLowerCase(), "pet profile", "contact owner"],
   };
 }
 
@@ -95,7 +95,6 @@ export default async function Home({ searchParams }: HomeProps) {
   // Check if this is the AIBO demo
   if (petId.toUpperCase() === 'AIBO') {
     const pet = aiboInfo;
-    const owner = aiboOwner;
 
     return (
       <div className="min-h-screen bg-gray-50">
@@ -155,7 +154,7 @@ export default async function Home({ searchParams }: HomeProps) {
     );
   }
 
-  const { pet, owner } = data;
+  const { pet } = data;
 
   return (
     <div className="min-h-screen bg-gray-50">
