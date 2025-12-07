@@ -27,8 +27,8 @@ export default function PetProfile({ pet }: PetProfileProps) {
   const images = pet.imageUrls || [];
   const hasImages = images.length > 0;
 
-  // Parse personality from comma-separated string
-  const personalityTraits = pet.personality
+  // Parse personality from comma-separated string (handle empty/undefined safely)
+  const personalityTraits = pet.personality && typeof pet.personality === 'string'
     ? pet.personality.split(',').map(trait => trait.trim()).filter(Boolean)
     : [];
 
