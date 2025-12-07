@@ -13,7 +13,7 @@ export interface AppwritePetDocument {
   color?: string;
   weight?: string;
   description?: string;
-  personality?: string; // Comma-separated string
+  personality?: string | string[]; // Can be string or array from Appwrite
   medicalInfo?: string;
   microchip?: string; // Microchip ID number
   imageUrls: string[] | string; // Array of image URLs or JSON stringified array

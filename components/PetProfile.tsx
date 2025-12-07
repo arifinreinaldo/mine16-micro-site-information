@@ -27,10 +27,22 @@ export default function PetProfile({ pet }: PetProfileProps) {
   const images = pet.imageUrls || [];
   const hasImages = images.length > 0;
 
-  // Parse personality from comma-separated string (handle empty/undefined safely)
-  const personalityTraits = pet.personality && typeof pet.personality === 'string'
-    ? pet.personality.split(',').map(trait => trait.trim()).filter(Boolean)
-    : [];
+  // Parse personality - handle both string and array formats from Appwrite
+  const personalityTraits = (() => {
+    if (!pet.personality) return [];
+
+    // If it's already an array, use it directly
+    if (Array.isArray(pet.personality)) {
+      return pet.personality.filter(Boolean);
+    }
+
+    // If it's a string, split by comma
+    if (typeof pet.personality === 'string') {
+      return pet.personality.split(',').map(trait => trait.trim()).filter(Boolean);
+    }
+
+    return [];
+  })();
 
   return (
     <div className="w-full max-w-5xl mx-auto">
