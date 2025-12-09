@@ -202,6 +202,24 @@ export default function ServiceInquiryForm({ petId, petName }: ServiceInquiryFor
               </div>
             )}
 
+            {/* Privacy Notice */}
+            <div className="bg-gray-50 border border-gray-200 p-4">
+              <p className="text-xs text-gray-600">
+                By submitting this form, you consent to us collecting your contact information to connect you with
+                service providers. We also collect your IP address and browser information to prevent spam.
+                Your data will be deleted after 90 days. Read our{" "}
+                <a
+                  href="/terms-privacy"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-900 underline hover:text-gray-700"
+                >
+                  Terms & Privacy Policy
+                </a>
+                .
+              </p>
+            </div>
+
             {/* Submit Button */}
             <div className="pt-2">
               <button
