@@ -102,7 +102,7 @@ export async function POST(request: NextRequest) {
       FOUND_PETS_COLLECTION_ID,
       ID.unique(),
       {
-        petID: petId,
+        petId,
         petName,
         finderName,
         finderPhone,
