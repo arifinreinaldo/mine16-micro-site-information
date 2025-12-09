@@ -310,21 +310,6 @@ export default function TermsPrivacy() {
               </div>
             </div>
           </section>
-
-          {/* Summary Box */}
-          <section className="pt-8 border-t border-gray-200">
-            <div className="bg-blue-50 border border-blue-200 p-6">
-              <h3 className="text-lg font-semibold text-blue-900 mb-3">📋 Quick Summary</h3>
-              <div className="space-y-2 text-blue-900">
-                <p><strong>✓ We collect your name and phone</strong> so pet owners can contact you</p>
-                <p><strong>✓ We collect digital fingerprint</strong> (IP + browser) to prevent spam</p>
-                <p><strong>✓ No cookies, no tracking, no ads</strong></p>
-                <p><strong>✓ Your data is deleted after 90 days</strong></p>
-                <p><strong>✓ You can request deletion anytime</strong></p>
-                <p><strong>✓ GDPR compliant</strong></p>
-              </div>
-            </div>
-          </section>
         </div>
       </main>
     </div>

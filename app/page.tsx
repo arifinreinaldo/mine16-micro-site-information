@@ -88,6 +88,18 @@ export default async function Home({ searchParams }: HomeProps) {
             </p>
           </div>
         </main>
+
+        {/* Footer */}
+        <footer className="bg-white border-t border-gray-200 mt-auto">
+          <div className="max-w-6xl mx-auto px-4 py-6 text-center">
+            <a
+              href="/terms-privacy"
+              className="text-sm text-gray-600 hover:text-gray-900 underline"
+            >
+              Terms & Privacy Policy
+            </a>
+          </div>
+        </footer>
       </div>
     );
   }
@@ -119,6 +131,18 @@ export default async function Home({ searchParams }: HomeProps) {
           <PetProfile pet={pet} />
           <FoundPetForm petId="AIBO" petName={pet.name} />
         </main>
+
+        {/* Footer */}
+        <footer className="bg-white border-t border-gray-200 mt-auto">
+          <div className="max-w-6xl mx-auto px-4 py-6 text-center">
+            <a
+              href="/terms-privacy"
+              className="text-sm text-gray-600 hover:text-gray-900 underline"
+            >
+              Terms & Privacy Policy
+            </a>
+          </div>
+        </footer>
       </div>
     );
   }
@@ -150,6 +174,18 @@ export default async function Home({ searchParams }: HomeProps) {
             </p>
           </div>
         </main>
+
+        {/* Footer */}
+        <footer className="bg-white border-t border-gray-200 mt-auto">
+          <div className="max-w-6xl mx-auto px-4 py-6 text-center">
+            <a
+              href="/terms-privacy"
+              className="text-sm text-gray-600 hover:text-gray-900 underline"
+            >
+              Terms & Privacy Policy
+            </a>
+          </div>
+        </footer>
       </div>
     );
   }
@@ -173,6 +209,18 @@ export default async function Home({ searchParams }: HomeProps) {
         <PetProfile pet={pet} />
         <FoundPetForm petId={petId} petName={pet.name} />
       </main>
+
+      {/* Footer */}
+      <footer className="bg-white border-t border-gray-200 mt-auto">
+        <div className="max-w-6xl mx-auto px-4 py-6 text-center">
+          <a
+            href="/terms-privacy"
+            className="text-sm text-gray-600 hover:text-gray-900 underline"
+          >
+            Terms & Privacy Policy
+          </a>
+        </div>
+      </footer>
     </div>
   );
 }
