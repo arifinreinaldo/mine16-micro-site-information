@@ -13,7 +13,7 @@ export default function TermsPrivacy() {
           <h1 className="text-3xl font-bold text-gray-900">
             Terms of Service & Privacy Policy
           </h1>
-          <p className="text-gray-600 mt-1 text-sm">Last Updated: December 2024</p>
+          <p className="text-gray-600 mt-1 text-sm">Last Updated: December 2025</p>
         </div>
       </header>
 
