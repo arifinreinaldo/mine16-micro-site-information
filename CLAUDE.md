@@ -32,7 +32,9 @@ npm run lint         # Run ESLint
 5. `getUserPhone()` is called with the `userId` to fetch owner's phone from Appwrite auth table
 6. Data is transformed from Appwrite schema to internal `Pet` type (including `ownerPhone`)
 7. `PetProfile` component renders pet details with either image carousel or emoji avatar
-8. Owner phone number (if available) is displayed in a contact section above the Found Pet form
+8. Owner phone number (if available) is displayed in a contact section with:
+   - Clickable phone link for dialing
+   - WhatsApp button with pre-filled message using `getWhatsAppUrl()` helper function
 9. `FoundPetForm` component renders below the contact section for lost pet reporting
 
 ### Appwrite Integration
@@ -173,6 +175,8 @@ Configured for Vercel deployment via `vercel.json`. When deploying:
 
 ### Component Architecture
 - `app/page.tsx` is a server component that handles data fetching and routing
+  - Contains helper functions: `formatPhoneForWhatsApp()` and `getWhatsAppUrl()` for WhatsApp integration
+  - Renders owner contact section with phone link and WhatsApp button
 - `PetProfile` is a server component that displays pet information
 - `ImageCarousel` and `FoundPetForm` are client components (use `"use client"` directive)
 - Client components are used only when interactivity is needed (carousel navigation, form submission)

@@ -6,6 +6,7 @@ A beautiful and responsive microsite built with Next.js and Tailwind CSS to show
 
 - **Dynamic Data Loading**: Integrated with Appwrite to fetch pet data dynamically via URL parameters
 - **Owner Phone Display**: Automatically retrieves and displays owner phone number from Appwrite authentication table
+- **WhatsApp Integration**: One-click WhatsApp button with pre-filled message "Hi I have found [pet name]"
 - **Image Carousel**: Support for multiple pet photos with automatic carousel navigation
 - **Found Pet Report Form**: Allow finders to submit reports when they find a pet, with DDoS protection
 - **Rate Limiting**: IP-based rate limiting (3 submissions per 15 minutes) to prevent spam
@@ -619,6 +620,11 @@ When viewing a pet profile:
 - The owner's phone number is automatically retrieved from the Appwrite authentication table
 - Displayed in a prominent blue section above the "Found Pet" form
 - Clickable phone link for easy dialing
+- **WhatsApp Button**: Green WhatsApp button that opens WhatsApp with a pre-filled message:
+  - Message: "Hi I have found [pet name]"
+  - Opens in a new tab/window
+  - Works on both mobile and desktop
+  - Automatically formats the phone number for WhatsApp compatibility
 - Only shows if the user has a phone number registered in their Appwrite account
 
 ### No Parameter Behavior
