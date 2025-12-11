@@ -60,19 +60,19 @@ async function getUserContactData(userId: string): Promise<UserContactData> {
     // Get user preferences (key-value pairs)
     const prefs = user.prefs || {};
 
-    // Extract membership and show_contact from preferences
+    // Extract membership and showContact from preferences
     const membership = prefs.membership as string | undefined;
-    const show_contact = prefs.show_contact as string | undefined;
+    const showContact_value = prefs.showContact as string | undefined;
 
-    // Convert show_contact to boolean (only "1" means true)
-    const showContact = show_contact === "1";
+    // Convert showContact to boolean (only "1" means true)
+    const showContact = showContact_value === "1";
 
     // DEBUG: Log the values
     console.log('=== DEBUG: User Contact Data ===');
     console.log('userId:', userId);
     console.log('user.phone:', user.phone);
     console.log('prefs.membership:', membership);
-    console.log('prefs.show_contact:', show_contact);
+    console.log('prefs.showContact:', showContact_value);
     console.log('showContact (converted):', showContact);
     console.log('================================');
 
