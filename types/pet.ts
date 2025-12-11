@@ -13,4 +13,6 @@ export interface Pet {
   petType: 'dog' | 'cat' | 'bird' | 'other'; // Required, determines avatar
   userId: string; // Required - from user auth
   ownerPhone?: string; // Phone number from Appwrite auth table
+  membership?: string; // User's membership level from Appwrite user preferences
+  showContact?: boolean; // Whether to show contact section (from user preferences)
 }

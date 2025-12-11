@@ -50,7 +50,18 @@ export default function PetProfile({ pet }: PetProfileProps) {
         {/* Header Section */}
         <div className="border-b border-gray-200 p-8 bg-white">
           <div className="flex items-baseline gap-3">
-            <h1 className="text-4xl font-bold text-gray-900">{pet.name}</h1>
+            <h1 className="text-4xl font-bold text-gray-900 flex items-center gap-2">
+              {pet.name}
+              {pet.membership === "pro" && (
+                <svg className="w-9 h-9 text-yellow-500" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 2L14.5 7L20 8L16 12L17 18L12 15L7 18L8 12L4 8L9.5 7L12 2Z" stroke="currentColor" strokeWidth="0.5" strokeLinejoin="round"/>
+                  <circle cx="12" cy="10" r="1.5" fill="currentColor" opacity="0.9"/>
+                  <circle cx="9" cy="12" r="1" fill="currentColor" opacity="0.8"/>
+                  <circle cx="15" cy="12" r="1" fill="currentColor" opacity="0.8"/>
+                  <path d="M10 7.5L12 6L14 7.5" stroke="currentColor" strokeWidth="0.8" fill="none" strokeLinecap="round"/>
+                </svg>
+              )}
+            </h1>
             <span className="text-lg text-gray-500">•</span>
             <p className="text-lg text-gray-600">{pet.breed}</p>
           </div>

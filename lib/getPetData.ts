@@ -25,6 +25,12 @@ export interface PetDataResponse {
   pet: Pet;
 }
 
+export interface UserContactData {
+  phone?: string;
+  membership?: string;
+  showContact?: boolean;
+}
+
 // Helper function to parse imageUrls from Appwrite
 function parseImageUrls(doc: AppwritePetDocument): string[] {
   if (Array.isArray(doc.imageUrls)) {
@@ -46,15 +52,35 @@ function parseImageUrls(doc: AppwritePetDocument): string[] {
   return [];
 }
 
-// Helper function to get user phone from Appwrite auth table
-async function getUserPhone(userId: string): Promise<string | undefined> {
+// Helper function to get user contact data from Appwrite auth table
+async function getUserContactData(userId: string): Promise<UserContactData> {
   try {
     const user = await users.get(userId);
-    // Return phone if available
-    return user.phone || undefined;
+
+    // Get user preferences (key-value pairs)
+    const prefs = user.prefs || {};
+
+    // Extract membership and show_contact from preferences
+    const membership = prefs.membership as string | undefined;
+    const show_contact = prefs.show_contact as string | undefined;
+
+    // Convert show_contact to boolean (only "1" means true)
+    const showContact = show_contact === "1";
+
+    // Return all contact data
+    return {
+      phone: user.phone || undefined,
+      membership,
+      showContact
+    };
   } catch (error) {
-    console.error('Error fetching user phone from Appwrite:', error);
-    return undefined;
+    console.error('Error fetching user contact data from Appwrite:', error);
+    // Return safe defaults if fetch fails
+    return {
+      phone: undefined,
+      membership: undefined,
+      showContact: false
+    };
   }
 }
 
@@ -78,8 +104,8 @@ export async function getPetDataByCode(code: string): Promise<PetDataResponse | 
     // Get the first matching document
     const doc = response.documents[0] as unknown as AppwritePetDocument;
 
-    // Fetch user phone from auth table
-    const ownerPhone = await getUserPhone(doc.userId);
+    // Fetch user contact data from auth table
+    const userContactData = await getUserContactData(doc.userId);
 
     // Transform Appwrite document to our Pet type
     const pet: Pet = {
@@ -96,7 +122,9 @@ export async function getPetDataByCode(code: string): Promise<PetDataResponse | 
       imageUrls: parseImageUrls(doc),
       petType: doc.petType,
       userId: doc.userId,
-      ownerPhone
+      ownerPhone: userContactData.phone,
+      membership: userContactData.membership,
+      showContact: userContactData.showContact
     };
 
     return { pet };
@@ -115,8 +143,8 @@ export async function getPetDataById(documentId: string): Promise<PetDataRespons
       documentId
     ) as unknown as AppwritePetDocument;
 
-    // Fetch user phone from auth table
-    const ownerPhone = await getUserPhone(doc.userId);
+    // Fetch user contact data from auth table
+    const userContactData = await getUserContactData(doc.userId);
 
     // Transform Appwrite document to our Pet type
     const pet: Pet = {
@@ -133,7 +161,9 @@ export async function getPetDataById(documentId: string): Promise<PetDataRespons
       imageUrls: parseImageUrls(doc),
       petType: doc.petType,
       userId: doc.userId,
-      ownerPhone
+      ownerPhone: userContactData.phone,
+      membership: userContactData.membership,
+      showContact: userContactData.showContact
     };
 
     return { pet };
