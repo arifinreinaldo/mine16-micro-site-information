@@ -29,14 +29,20 @@ npm run lint         # Run ESLint
 2. `app/page.tsx` extracts the `param` from searchParams (must be awaited in Next.js 16+)
 3. Special case: `?param=AIBO` (case-insensitive) loads demo data from `data/petData.ts`
 4. Otherwise: `getPetDataById()` fetches document from Appwrite by document ID
-5. `getUserPhone()` is called with the `userId` to fetch owner's phone from Appwrite auth table
-6. Data is transformed from Appwrite schema to internal `Pet` type (including `ownerPhone`)
+5. `getUserContactData()` is called with the `userId` to fetch owner's contact data from Appwrite auth table:
+   - `phone` - Owner's phone number
+   - `membership` - Membership tier from user preferences (`"pro"` or undefined)
+   - `showContact` - Boolean flag from user preferences (only `"1"` string means true)
+6. Data is transformed from Appwrite schema to internal `Pet` type (including `ownerPhone`, `membership`, `showContact`)
 7. `PetProfile` component renders pet details with either image carousel or emoji avatar
-8. If owner phone is available, a "Found This Pet?" contact section is displayed with:
-   - **Privacy-first**: Phone number is NOT displayed publicly
-   - WhatsApp button with pre-filled message using `getWhatsAppUrl()` helper function
-   - Encouraging message to contact the owner immediately
-9. `FoundPetForm` component renders below the contact section for lost pet reporting
+8. Contact section rendering logic (membership-based):
+   - **Non-Pro Members**: Simple WhatsApp button in gray box (always shown if phone available)
+   - **Pro Members with showContact=true**: Fancy "Found This Pet?" section with blue styling
+   - **Pro Members with showContact=false**: No contact section displayed
+   - All contact sections use WhatsApp button with pre-filled message via `getWhatsAppUrl()` helper
+   - Phone number is NEVER displayed publicly (privacy-first design)
+9. `FoundPetForm` component renders only for Pro members
+10. `ServiceInquiryForm` component renders only for Pro members (lead generation for pet services)
 
 ### Appwrite Integration
 - **Client Setup**: `lib/appwrite.ts` initializes two Appwrite SDK clients:
@@ -48,7 +54,10 @@ npm run lint         # Run ESLint
 - **Data Fetching**: `lib/getPetData.ts` contains two functions:
   - `getPetDataById(documentId)` - Fetches by document ID (currently used)
   - `getPetDataByCode(code)` - Fetches by querying a code field (not currently used)
-- **User Phone Fetching**: Both data fetching functions call `getUserPhone(userId)` to retrieve the owner's phone number from the Appwrite auth table using the Users API from `node-appwrite`
+- **User Contact Data Fetching**: Both data fetching functions call `getUserContactData(userId)` to retrieve:
+  - Owner's phone number from Appwrite auth table
+  - `membership` tier from user preferences (stored as string, e.g., `"pro"`)
+  - `showContact` flag from user preferences (stored as string, only `"1"` means true, converted to boolean)
 - **Data Transformation**: Appwrite documents use field names like `petName`, etc. These are mapped to internal `Pet` interface
 - **Personality Field**: Handles both array and string formats (comma-separated or JSON stringified)
 - **Image URLs**: The `parseImageUrls()` helper supports:
@@ -56,6 +65,7 @@ npm run lint         # Run ESLint
   - `imageUrls` as JSON string or comma-separated string
   - `imageUrl` single string (deprecated, falls back to this)
 - **Found Pet Reports**: `app/api/report-found-pet/route.ts` provides a POST endpoint that creates documents in a separate collection for lost pet reports
+- **Service Inquiries**: `app/api/service-inquiry/route.ts` provides a POST endpoint for lead generation, connecting pet owners with service providers (vets, groomers, trainers, etc.)
 
 ### Type System
 All types are defined in `types/pet.ts`:
@@ -77,7 +87,8 @@ All types are defined in `types/pet.ts`:
 ### Component Structure
 - `components/PetProfile.tsx`: Server component that displays pet details, image carousel or emoji avatar, personality traits, and medical info
 - `components/ImageCarousel.tsx`: Client component with navigation, dot indicators, and image counter for multiple pet photos
-- `components/FoundPetForm.tsx`: Client component with form validation and submission for found pet reports
+- `components/FoundPetForm.tsx`: Client component with form validation and submission for found pet reports (Pro members only)
+- `components/ServiceInquiryForm.tsx`: Client component for service marketplace lead generation (Pro members only) - allows users to request vet, grooming, training, and other pet services
 - `components/ContactSection.tsx`: Shows owner contact information with clickable email/phone links (deprecated, contact info now in PetProfile)
 
 ### Environment Variables
@@ -89,6 +100,7 @@ Required for Appwrite integration:
 - `NEXT_PUBLIC_APPWRITE_DATABASE_ID` - Database ID containing pet data
 - `NEXT_PUBLIC_APPWRITE_COLLECTION_ID` - Collection ID for pet profiles
 - `NEXT_PUBLIC_APPWRITE_FOUND_PETS_COLLECTION_ID` - (Optional) Collection ID for found pet reports
+- `NEXT_PUBLIC_APPWRITE_SERVICE_INQUIRIES_COLLECTION_ID` - (Optional) Collection ID for service inquiries (monetization feature)
 
 **Server-side only variables** (no `NEXT_PUBLIC_` prefix):
 - `APPWRITE_API_READ_KEY` - API key for server-side access to user data (required scopes: `users.read`)
@@ -119,6 +131,23 @@ The main collection must have these attributes:
 
 **Permissions**: Collection must have "Read" permission enabled for "Any" role so the microsite can fetch data publicly.
 
+### User Preferences (Appwrite Auth)
+Pet owners can customize their profile behavior via Appwrite user preferences:
+- `membership` (string) - Membership tier, e.g., `"pro"` for premium features
+- `showContact` (string) - Controls contact section visibility for Pro members:
+  - `"1"` - Show the "Found This Pet?" contact section
+  - Any other value or undefined - Hide contact section
+  - **Note**: Non-Pro members always show contact button (if phone available)
+
+**Setting User Preferences:**
+Use Appwrite Console → Auth → Users → Select User → Preferences tab to add:
+```json
+{
+  "membership": "pro",
+  "showContact": "1"
+}
+```
+
 ### Found Pet Reports Collection (Optional)
 If using the found pet reporting feature, create a second collection with these attributes:
 - `petID` (string, required) - Document ID of the pet profile (note: uppercase ID)
@@ -136,6 +165,30 @@ If using the found pet reporting feature, create a second collection with these 
 - Uses in-memory storage with automatic cleanup
 - Returns 429 status code with `Retry-After` header when limit exceeded
 - Supports proxy/CDN IP detection (x-forwarded-for, x-real-ip, cf-connecting-ip)
+
+### Service Inquiries Collection (Optional - Monetization)
+For the service marketplace feature (lead generation), create a third collection:
+- `petId` (string, required) - Document ID of the pet
+- `petName` (string, required) - Name of the pet
+- `serviceType` (string, required) - Type of service (vet, groomer, trainer, walker, boarding, other)
+- `inquirerName` (string, required) - Name of person requesting service
+- `inquirerEmail` (string, required) - Email of inquirer
+- `inquirerPhone` (string, required) - Phone number of inquirer
+- `message` (string, required) - Details about service needed
+- `location` (string, optional) - Inquirer's location (city, state)
+- `status` (string, required) - Default: `pending`, values: `pending`, `contacted`, `completed`
+- `createdAt` (string, required) - ISO timestamp
+- `_antiSpamHash` (string, required) - Server-side spam prevention hash
+
+**Permissions**: Must have "Create" permission for "Any" role to allow public submissions.
+
+**Rate Limiting**: The API endpoint implements IP-based rate limiting:
+- 5 submissions per 30 minutes per IP address
+- Uses in-memory storage with automatic cleanup
+- Returns 429 status code when limit exceeded
+- Supports proxy/CDN IP detection
+
+**Monetization**: Service inquiries are leads that can be sold to local service providers ($2-10 per lead). See `MONETIZATION.md` for details.
 
 ## Deployment
 
@@ -185,10 +238,37 @@ Configured for Vercel deployment via `vercel.json`. When deploying:
 
 ### API Routes
 - `app/api/report-found-pet/route.ts` handles POST requests for found pet reports
-- Validates required fields: `petId`, `petName`, `finderName`, `finderPhone`, `message`
-- Creates documents in the Found Pets collection with auto-generated ID and timestamp
-- Implements IP-based rate limiting (3 requests per 15 minutes)
-- Note: Document is created with field name `petID` (uppercase ID) in Appwrite
+  - Validates required fields: `petId`, `petName`, `finderName`, `finderPhone`, `message`
+  - Creates documents in the Found Pets collection with auto-generated ID and timestamp
+  - Implements IP-based rate limiting (3 requests per 15 minutes)
+  - Note: Document is created with field name `petID` (uppercase ID) in Appwrite
+- `app/api/service-inquiry/route.ts` handles POST requests for service marketplace
+  - Validates required fields: `petId`, `petName`, `serviceType`, `inquirerName`, `inquirerEmail`, `inquirerPhone`, `message`
+  - Creates documents in Service Inquiries collection with anti-spam hash
+  - Implements IP-based rate limiting (5 requests per 30 minutes)
+  - Server-side only fingerprinting (GDPR-compliant)
+
+### Membership Tiers & Feature Gating
+
+The application supports two membership tiers with different feature access:
+
+**Non-Pro Members (Default):**
+- Simple WhatsApp contact button in gray box
+- Always shows contact button if phone number is available
+- No access to Found Pet Form
+- No access to Service Inquiry Form
+
+**Pro Members (`membership: "pro"`):**
+- Enhanced "Found This Pet?" section with blue styling (when `showContact: "1"`)
+- Can hide contact section by setting `showContact` to any value other than `"1"`
+- Access to Found Pet Form for receiving lost pet reports
+- Access to Service Inquiry Form for connecting with service providers
+- Premium features suitable for professional pet owners, breeders, or service providers
+
+**Implementation:**
+- Membership is controlled via Appwrite user preferences, not in the pet document
+- Use `getUserContactData()` to fetch `membership` and `showContact` from user prefs
+- All conditional rendering is based on `pet.membership === "pro"` check in `app/page.tsx`
 
 ### Styling
 - Uses Tailwind CSS v4 with PostCSS

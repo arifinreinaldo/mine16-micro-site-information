@@ -67,11 +67,14 @@ export default function FoundPetForm({ petId, petName }: FoundPetFormProps) {
 
   return (
     <div className="w-full max-w-5xl mx-auto mt-6">
-      <div className="bg-white border border-gray-200 shadow-sm overflow-hidden">
+      <div className="bg-white rounded-3xl border-2 border-pink-200 shadow-lg overflow-hidden">
         {/* Header */}
-        <div className="border-b border-gray-200 px-8 py-6 bg-white">
-          <h2 className="text-2xl font-bold text-gray-900">Found This Pet?</h2>
-          <p className="text-sm text-gray-500 mt-1">Help reunite {petName} with their owner</p>
+        <div className="border-b-2 border-pink-200 px-8 py-6 bg-gradient-to-br from-pink-50 to-rose-50">
+          <div className="flex items-center gap-3 mb-2">
+            <span className="text-4xl">🐾</span>
+            <h2 className="text-3xl font-bold text-pink-900">Found This Pet?</h2>
+          </div>
+          <p className="text-base text-pink-700 font-medium ml-14">Help reunite {petName} with their owner by submitting a report below!</p>
         </div>
 
         {/* Form */}
@@ -79,8 +82,8 @@ export default function FoundPetForm({ petId, petName }: FoundPetFormProps) {
           <div className="space-y-6">
             {/* Finder Name */}
             <div>
-              <label htmlFor="finderName" className="block text-sm text-gray-500 mb-1">
-                Your Name
+              <label htmlFor="finderName" className="block text-base font-semibold text-pink-800 mb-2 flex items-center gap-2">
+                <span>👤</span> Your Name
               </label>
               <input
                 type="text"
@@ -89,15 +92,15 @@ export default function FoundPetForm({ petId, petName }: FoundPetFormProps) {
                 value={formData.finderName}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-2.5 border border-gray-300 focus:outline-none focus:border-gray-900 transition-colors text-base text-gray-900"
+                className="w-full px-5 py-3 border-2 border-pink-200 rounded-xl focus:outline-none focus:border-pink-400 focus:ring-2 focus:ring-pink-100 transition-all text-base text-gray-900 bg-pink-50/30"
                 placeholder="Enter your name"
               />
             </div>
 
             {/* Phone */}
             <div>
-              <label htmlFor="finderPhone" className="block text-sm text-gray-500 mb-1">
-                Your Phone
+              <label htmlFor="finderPhone" className="block text-base font-semibold text-pink-800 mb-2 flex items-center gap-2">
+                <span>📱</span> Your Phone
               </label>
               <input
                 type="tel"
@@ -106,15 +109,15 @@ export default function FoundPetForm({ petId, petName }: FoundPetFormProps) {
                 value={formData.finderPhone}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-2.5 border border-gray-300 focus:outline-none focus:border-gray-900 transition-colors text-base text-gray-900"
+                className="w-full px-5 py-3 border-2 border-pink-200 rounded-xl focus:outline-none focus:border-pink-400 focus:ring-2 focus:ring-pink-100 transition-all text-base text-gray-900 bg-pink-50/30"
                 placeholder="+1 (555) 123-4567"
               />
             </div>
 
             {/* Message */}
             <div>
-              <label htmlFor="message" className="block text-sm text-gray-500 mb-1">
-                Description
+              <label htmlFor="message" className="block text-base font-semibold text-pink-800 mb-2 flex items-center gap-2">
+                <span>✍️</span> Where did you find {petName}?
               </label>
               <textarea
                 id="message"
@@ -123,37 +126,52 @@ export default function FoundPetForm({ petId, petName }: FoundPetFormProps) {
                 onChange={handleChange}
                 required
                 rows={4}
-                className="w-full px-4 py-2.5 border border-gray-300 focus:outline-none focus:border-gray-900 transition-colors text-base text-gray-900"
+                className="w-full px-5 py-3 border-2 border-pink-200 rounded-xl focus:outline-none focus:border-pink-400 focus:ring-2 focus:ring-pink-100 transition-all text-base text-gray-900 bg-pink-50/30"
                 placeholder="Provide details about where and when you found the pet..."
               />
             </div>
 
             {/* Submit Status Messages */}
             {submitStatus === "success" && (
-              <div className="bg-gray-50 border border-gray-200 p-4">
-                <p className="text-gray-900 font-medium text-sm">Report submitted successfully</p>
-                <p className="text-gray-600 text-sm mt-1">
-                  Thank you for helping reunite {petName} with their owner.
-                </p>
+              <div className="bg-gradient-to-r from-green-100 to-emerald-100 border-2 border-green-300 rounded-2xl p-5 shadow-md">
+                <div className="flex items-start gap-3">
+                  <span className="text-3xl">✅</span>
+                  <div>
+                    <p className="text-green-900 font-bold text-base">Report submitted successfully!</p>
+                    <p className="text-green-700 text-base mt-1">
+                      Thank you for helping reunite {petName} with their owner. They'll be contacted soon!
+                    </p>
+                  </div>
+                </div>
               </div>
             )}
 
             {submitStatus === "error" && (
-              <div className="bg-gray-50 border border-gray-200 p-4">
-                <p className="text-gray-900 font-medium text-sm">Error submitting report</p>
-                <p className="text-gray-600 text-sm mt-1">
-                  Please try again or contact support if the issue persists.
-                </p>
+              <div className="bg-gradient-to-r from-red-100 to-rose-100 border-2 border-red-300 rounded-2xl p-5 shadow-md">
+                <div className="flex items-start gap-3">
+                  <span className="text-3xl">❌</span>
+                  <div>
+                    <p className="text-red-900 font-bold text-base">Oops! Something went wrong</p>
+                    <p className="text-red-700 text-base mt-1">
+                      Please try again or contact support if the issue persists.
+                    </p>
+                  </div>
+                </div>
               </div>
             )}
 
             {submitStatus === "ratelimit" && (
-              <div className="bg-amber-50 border border-amber-200 p-4">
-                <p className="text-amber-900 font-medium text-sm">Too many requests</p>
-                <p className="text-amber-800 text-sm mt-1">
-                  You've reached the submission limit. Please wait {retryAfter} minutes before trying again.
-                  This helps prevent spam and ensures all reports are processed properly.
-                </p>
+              <div className="bg-gradient-to-r from-amber-100 to-yellow-100 border-2 border-amber-300 rounded-2xl p-5 shadow-md">
+                <div className="flex items-start gap-3">
+                  <span className="text-3xl">⏰</span>
+                  <div>
+                    <p className="text-amber-900 font-bold text-base">Please wait a moment</p>
+                    <p className="text-amber-800 text-base mt-1">
+                      You've reached the submission limit. Please wait {retryAfter} minutes before trying again.
+                      This helps prevent spam and ensures all reports are processed properly.
+                    </p>
+                  </div>
+                </div>
               </div>
             )}
 
@@ -162,9 +180,19 @@ export default function FoundPetForm({ petId, petName }: FoundPetFormProps) {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full bg-gray-900 text-white px-6 py-3 text-center font-medium hover:bg-gray-800 transition-colors text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                className="btn-friendly w-full bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white px-8 py-4 text-center font-bold rounded-full text-lg shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
-                {isSubmitting ? "Submitting..." : "Submit Report"}
+                {isSubmitting ? (
+                  <>
+                    <span className="animate-pulse">⏳</span>
+                    Submitting...
+                  </>
+                ) : (
+                  <>
+                    <span>📮</span>
+                    Submit Report
+                  </>
+                )}
               </button>
             </div>
           </div>
