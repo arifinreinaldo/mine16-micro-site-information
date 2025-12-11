@@ -190,7 +190,45 @@ Configured for Vercel deployment via `vercel.json`. When deploying:
 - Implements IP-based rate limiting (3 requests per 15 minutes)
 - Note: Document is created with field name `petID` (uppercase ID) in Appwrite
 
-### Styling
-- Uses Tailwind CSS v4 with PostCSS
-- No custom CSS files needed beyond `app/globals.css`
-- Footer has been intentionally removed from all pages
+### Design System & Styling
+
+**Design Philosophy**: Warm, friendly, and welcoming design with playful elements while maintaining professionalism.
+
+**Technology**: Tailwind CSS v4 with PostCSS
+
+**Color Palette** (defined in `app/globals.css`):
+- **Warm backgrounds**: Cream (#FFFDF7), warm beige (#F3E8D8)
+- **Primary accents**: Warm orange (#FF8B67), coral (#FF6B47)
+- **Secondary accents**: Soft purple (#A78BFA), lavender (#C4B5FD)
+- **Success/actions**: Friendly green (#10B981), soft green (#6EE7B7)
+- **Shadows**: Warm-toned (rgba(251, 146, 60, 0.1)) instead of gray
+
+**Design Patterns**:
+- **Rounded corners**: `rounded-2xl` (16px) and `rounded-3xl` (24px) throughout
+- **Gradient backgrounds**: Used extensively for cards and sections (e.g., `from-orange-50 to-amber-50`)
+- **Emoji usage**: Emojis used as visual accents in headers and labels (📋 About, 🎨 Color, 💜 Personality, etc.)
+- **Pill-shaped buttons**: All buttons use `rounded-full` with gradient backgrounds
+- **Soft shadows**: `shadow-lg`, `shadow-xl` with warm tones
+- **Border styles**: 2px borders (`border-2`) with warm colors instead of gray
+
+**Custom Animations** (in `globals.css`):
+- `.animate-bounce-soft`: Gentle vertical bounce for emojis (2s infinite)
+- `.animate-pulse-soft`: Subtle opacity pulse (2s infinite)
+- `.btn-friendly`: Button hover effect with lift and scale (translateY + scale)
+
+**Component-Specific Styling**:
+- **PetProfile**: Color-coded sections (orange for About, blue for Facts, purple for Personality, green for Health)
+- **ImageCarousel**: Orange gradient controls, rounded container with warm borders
+- **Forms**: Soft colored inputs with focus rings, emoji labels, gradient success/error messages
+- **Contact sections**: Membership-based styling (green for simple, blue for Pro members)
+
+**Typography**:
+- Sentence case for labels (not uppercase) for friendliness
+- Font weights: `font-bold` for headers, `font-semibold` for labels, `font-medium` for content
+- Emojis integrated into text flow for visual personality
+
+**Important Notes**:
+- Footer intentionally uses orange gradients to match warm theme
+- All hover states include scale/lift animations for interactivity
+- Error states use red gradients, success uses green, warnings use amber
+- Background gradients create depth without heavy shadows
