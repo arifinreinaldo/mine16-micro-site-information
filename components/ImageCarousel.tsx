@@ -32,7 +32,7 @@ export default function ImageCarousel({ images, petName }: ImageCarouselProps) {
   }
 
   return (
-    <div className="relative w-full aspect-square rounded-2xl border-2 border-orange-200 bg-gradient-to-br from-orange-50 to-amber-50 overflow-hidden shadow-lg">
+    <div className="relative w-full aspect-square border border-gray-200 bg-gray-50">
       {/* Main Image */}
       <div className="relative w-full h-full">
         <Image
@@ -50,14 +50,14 @@ export default function ImageCarousel({ images, petName }: ImageCarouselProps) {
         <>
           <button
             onClick={goToPrevious}
-            className="absolute left-3 top-1/2 -translate-y-1/2 bg-gradient-to-r from-orange-400 to-amber-400 hover:from-orange-500 hover:to-amber-500 text-white p-3 rounded-full border-2 border-white shadow-lg transition-all hover:scale-110"
+            className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-gray-900 p-2 border border-gray-200 transition-colors"
             aria-label="Previous image"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
-              strokeWidth={3}
+              strokeWidth={2}
               stroke="currentColor"
               className="w-5 h-5"
             >
@@ -70,14 +70,14 @@ export default function ImageCarousel({ images, petName }: ImageCarouselProps) {
           </button>
           <button
             onClick={goToNext}
-            className="absolute right-3 top-1/2 -translate-y-1/2 bg-gradient-to-r from-orange-400 to-amber-400 hover:from-orange-500 hover:to-amber-500 text-white p-3 rounded-full border-2 border-white shadow-lg transition-all hover:scale-110"
+            className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-gray-900 p-2 border border-gray-200 transition-colors"
             aria-label="Next image"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
-              strokeWidth={3}
+              strokeWidth={2}
               stroke="currentColor"
               className="w-5 h-5"
             >
@@ -93,15 +93,15 @@ export default function ImageCarousel({ images, petName }: ImageCarouselProps) {
 
       {/* Dot Indicators - Only show if more than 1 image */}
       {images.length > 1 && (
-        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full border-2 border-orange-200 shadow-md">
+        <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2">
           {images.map((_, index) => (
             <button
               key={index}
               onClick={() => goToSlide(index)}
-              className={`w-3 h-3 rounded-full border-2 transition-all ${
+              className={`w-2 h-2 border border-gray-300 transition-colors ${
                 index === currentIndex
-                  ? "bg-gradient-to-r from-orange-400 to-amber-400 border-orange-500 scale-125"
-                  : "bg-white border-orange-300 hover:bg-orange-100 hover:scale-110"
+                  ? "bg-gray-900"
+                  : "bg-white/80 hover:bg-white"
               }`}
               aria-label={`Go to image ${index + 1}`}
             />
@@ -111,8 +111,8 @@ export default function ImageCarousel({ images, petName }: ImageCarouselProps) {
 
       {/* Image Counter */}
       {images.length > 1 && (
-        <div className="absolute top-4 right-4 bg-gradient-to-r from-orange-400 to-amber-400 text-white px-4 py-2 rounded-full text-sm font-bold shadow-lg border-2 border-white">
-          📸 {currentIndex + 1} / {images.length}
+        <div className="absolute top-3 right-3 bg-gray-900/75 text-white px-2 py-1 text-xs font-medium">
+          {currentIndex + 1} / {images.length}
         </div>
       )}
     </div>

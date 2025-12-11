@@ -46,25 +46,30 @@ export default function PetProfile({ pet }: PetProfileProps) {
 
   return (
     <div className="w-full max-w-5xl mx-auto">
-      <div className="bg-white rounded-3xl border-2 border-orange-100 shadow-lg overflow-hidden">
+      <div className="bg-white border border-gray-200 shadow-sm overflow-hidden">
         {/* Header Section */}
-        <div className={`border-b-2 p-8 ${pet.membership === "pro" ? "bg-gradient-to-br from-purple-50 via-pink-50 to-orange-50 border-purple-100" : "bg-gradient-to-br from-orange-50 to-amber-50 border-orange-100"}`}>
-          <div className="flex items-center gap-3 flex-wrap">
-            <h1 className={`text-4xl font-bold tracking-tight ${pet.membership === "pro" ? "text-purple-900" : "text-orange-900"}`}>
-              Meet {pet.name}! {getAvatar()}
+        <div className={`border-b p-8 ${pet.membership === "pro" ? "bg-gradient-to-b from-slate-50 to-white border-slate-200" : "bg-white border-gray-200"}`}>
+          <div className="flex items-baseline gap-3">
+            <h1 className={`text-4xl font-bold tracking-tight ${pet.membership === "pro" ? "text-slate-800" : "text-gray-900"}`}>
+              {pet.name}
             </h1>
-          </div>
-          <div className="mt-3 flex items-center gap-3 flex-wrap">
             {pet.membership === "pro" && (
-              <div className="inline-flex items-center gap-1.5 bg-white/80 backdrop-blur-sm px-3 py-1.5 rounded-full border border-purple-200 shadow-sm">
-                <span className="text-lg">✨</span>
-                <span className="text-xs font-medium text-purple-700">Verified Member</span>
+              <div className="flex items-center gap-1.5 opacity-60 hover:opacity-100 transition-opacity duration-300">
+                <svg className="w-4 h-4 text-slate-600" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                </svg>
+                <span className="text-xs font-medium text-slate-600 tracking-widest uppercase">Verified</span>
               </div>
             )}
-            <div className={`inline-flex items-center gap-2 ${pet.membership === "pro" ? "bg-white/60" : "bg-white/80"} backdrop-blur-sm px-4 py-1.5 rounded-full border ${pet.membership === "pro" ? "border-purple-200" : "border-orange-200"} shadow-sm`}>
-              <span className="text-base font-medium text-gray-700">{pet.breed}</span>
-            </div>
+            <span className="text-lg text-gray-400">•</span>
+            <p className={`text-lg ${pet.membership === "pro" ? "text-slate-600 font-medium" : "text-gray-600"}`}>{pet.breed}</p>
           </div>
+          {pet.membership === "pro" && (
+            <div className="mt-1 flex items-center gap-1.5">
+              <div className="h-px w-8 bg-gradient-to-r from-slate-300 to-transparent"></div>
+              <span className="text-xs text-slate-400 tracking-wide">Premium member</span>
+            </div>
+          )}
         </div>
 
         {/* Content Section */}
@@ -75,8 +80,8 @@ export default function PetProfile({ pet }: PetProfileProps) {
               {hasImages ? (
                 <ImageCarousel images={images} petName={pet.name} />
               ) : (
-                <div className="relative w-full aspect-square rounded-2xl border-2 border-orange-200 bg-gradient-to-br from-orange-50 to-amber-50 flex items-center justify-center shadow-md">
-                  <div className="text-9xl animate-bounce-soft">{getAvatar()}</div>
+                <div className="relative w-full aspect-square border border-gray-200 bg-gray-50 flex items-center justify-center">
+                  <div className="text-8xl opacity-30">{getAvatar()}</div>
                 </div>
               )}
             </div>
@@ -85,51 +90,45 @@ export default function PetProfile({ pet }: PetProfileProps) {
             <div className="md:col-span-2 space-y-8">
               {/* About Section - Only show if description exists */}
               {pet.description && (
-                <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl p-6 border-2 border-orange-100">
-                  <h2 className="text-lg font-bold text-orange-800 mb-3 flex items-center gap-2">
-                    <span className="text-2xl">📋</span>
-                    About {pet.name}
-                  </h2>
+                <div>
+                  <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-500 mb-3">About</h2>
                   <p className="text-gray-700 leading-relaxed text-base">{pet.description}</p>
                 </div>
               )}
 
               {/* Details Section - Only show if at least one detail exists */}
               {(pet.age || pet.gender || pet.color || pet.weight || pet.microchip) && (
-                <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl p-6 border-2 border-blue-100">
-                  <h3 className="text-lg font-bold text-blue-800 mb-4 flex items-center gap-2">
-                    <span className="text-2xl">🔍</span>
-                    Quick Facts
-                  </h3>
-                  <div className="grid grid-cols-2 gap-x-6 gap-y-4">
+                <div>
+                  <h3 className="text-sm font-semibold uppercase tracking-wide text-gray-500 mb-3">Details</h3>
+                  <div className="grid grid-cols-2 gap-x-8 gap-y-4">
                     {pet.age && (
-                      <div className="bg-white/60 rounded-xl p-3 border border-blue-100">
-                        <p className="text-sm text-blue-600 font-medium mb-1">🎂 Age</p>
-                        <p className="text-base font-semibold text-gray-800">{pet.age} years</p>
+                      <div>
+                        <p className="text-sm text-gray-500">Age</p>
+                        <p className="text-base font-medium text-gray-900 mt-1">{pet.age} years</p>
                       </div>
                     )}
                     {pet.gender && (
-                      <div className="bg-white/60 rounded-xl p-3 border border-blue-100">
-                        <p className="text-sm text-blue-600 font-medium mb-1">⚧ Gender</p>
-                        <p className="text-base font-semibold text-gray-800">{pet.gender}</p>
+                      <div>
+                        <p className="text-sm text-gray-500">Gender</p>
+                        <p className="text-base font-medium text-gray-900 mt-1">{pet.gender}</p>
                       </div>
                     )}
                     {pet.color && (
-                      <div className="bg-white/60 rounded-xl p-3 border border-blue-100">
-                        <p className="text-sm text-blue-600 font-medium mb-1">🎨 Color</p>
-                        <p className="text-base font-semibold text-gray-800">{pet.color}</p>
+                      <div>
+                        <p className="text-sm text-gray-500">Color</p>
+                        <p className="text-base font-medium text-gray-900 mt-1">{pet.color}</p>
                       </div>
                     )}
                     {pet.weight && (
-                      <div className="bg-white/60 rounded-xl p-3 border border-blue-100">
-                        <p className="text-sm text-blue-600 font-medium mb-1">⚖️ Weight</p>
-                        <p className="text-base font-semibold text-gray-800">{pet.weight}</p>
+                      <div>
+                        <p className="text-sm text-gray-500">Weight</p>
+                        <p className="text-base font-medium text-gray-900 mt-1">{pet.weight}</p>
                       </div>
                     )}
                     {pet.microchip && (
-                      <div className="bg-white/60 rounded-xl p-3 border border-blue-100 col-span-2">
-                        <p className="text-sm text-blue-600 font-medium mb-1">🔖 Microchip ID</p>
-                        <p className="text-base font-semibold text-gray-800 font-mono">{pet.microchip}</p>
+                      <div>
+                        <p className="text-sm text-gray-500">Microchip ID</p>
+                        <p className="text-base font-medium text-gray-900 mt-1">{pet.microchip}</p>
                       </div>
                     )}
                   </div>
@@ -138,16 +137,13 @@ export default function PetProfile({ pet }: PetProfileProps) {
 
               {/* Personality Traits - Only show if personality has items */}
               {personalityTraits.length > 0 && (
-                <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl p-6 border-2 border-purple-100">
-                  <h3 className="text-lg font-bold text-purple-800 mb-4 flex items-center gap-2">
-                    <span className="text-2xl">✨</span>
-                    What makes {pet.name} special
-                  </h3>
-                  <ul className="space-y-3">
+                <div>
+                  <h3 className="text-sm font-semibold uppercase tracking-wide text-gray-500 mb-3">Personality</h3>
+                  <ul className="space-y-2">
                     {personalityTraits.map((trait, index) => (
-                      <li key={index} className="text-base text-gray-700 flex items-start bg-white/60 rounded-xl p-3 border border-purple-100">
-                        <span className="text-purple-500 mr-3 text-xl">💜</span>
-                        <span className="font-medium">{trait}</span>
+                      <li key={index} className="text-base text-gray-700 flex items-start">
+                        <span className="text-gray-400 mr-2">•</span>
+                        <span>{trait}</span>
                       </li>
                     ))}
                   </ul>
@@ -156,12 +152,9 @@ export default function PetProfile({ pet }: PetProfileProps) {
 
               {/* Medical Info - Only show if exists */}
               {pet.medicalInfo && (
-                <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl p-6 border-2 border-green-100">
-                  <h3 className="text-lg font-bold text-green-800 mb-3 flex items-center gap-2">
-                    <span className="text-2xl">💚</span>
-                    Health Information
-                  </h3>
-                  <p className="text-base text-gray-700 leading-relaxed bg-white/60 rounded-xl p-4 border border-green-100">{pet.medicalInfo}</p>
+                <div>
+                  <h3 className="text-sm font-semibold uppercase tracking-wide text-gray-500 mb-3">Medical Information</h3>
+                  <p className="text-base text-gray-700 leading-relaxed">{pet.medicalInfo}</p>
                 </div>
               )}
             </div>

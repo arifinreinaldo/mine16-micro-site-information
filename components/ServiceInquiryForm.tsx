@@ -67,14 +67,11 @@ export default function ServiceInquiryForm({ petId, petName }: ServiceInquiryFor
 
   return (
     <div className="w-full max-w-5xl mx-auto mt-6">
-      <div className="bg-white rounded-3xl border-2 border-blue-200 shadow-lg overflow-hidden">
+      <div className="bg-white border border-gray-200 shadow-sm overflow-hidden">
         {/* Header */}
-        <div className="border-b-2 border-blue-200 px-8 py-6 bg-gradient-to-br from-blue-50 to-cyan-50">
-          <div className="flex items-center gap-3 mb-2">
-            <span className="text-4xl">🐕‍🦺</span>
-            <h2 className="text-3xl font-bold text-blue-900">Need Pet Services?</h2>
-          </div>
-          <p className="text-base text-blue-700 font-medium ml-14">Connect with verified vets, groomers, and trainers for {petName}</p>
+        <div className="border-b border-gray-200 px-8 py-6 bg-white">
+          <h2 className="text-2xl font-bold text-gray-900">Need Pet Services?</h2>
+          <p className="text-sm text-gray-500 mt-1">Connect with verified vets, groomers, and trainers for {petName}</p>
         </div>
 
         {/* Form */}
@@ -82,8 +79,8 @@ export default function ServiceInquiryForm({ petId, petName }: ServiceInquiryFor
           <div className="space-y-6">
             {/* Service Type */}
             <div>
-              <label htmlFor="serviceType" className="block text-base font-semibold text-blue-800 mb-2 flex items-center gap-2">
-                <span>🔧</span> Service Type
+              <label htmlFor="serviceType" className="block text-sm text-gray-500 mb-1">
+                Service Type
               </label>
               <select
                 id="serviceType"
@@ -91,21 +88,21 @@ export default function ServiceInquiryForm({ petId, petName }: ServiceInquiryFor
                 value={formData.serviceType}
                 onChange={handleChange}
                 required
-                className="w-full px-5 py-3 border-2 border-blue-200 rounded-xl focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all text-base text-gray-900 bg-blue-50/30"
+                className="w-full px-4 py-2.5 border border-gray-300 focus:outline-none focus:border-gray-900 transition-colors text-base text-gray-900"
               >
-                <option value="vet">🏥 Veterinary Care</option>
-                <option value="groomer">✂️ Grooming</option>
-                <option value="trainer">🎓 Training</option>
-                <option value="walker">🚶 Dog Walking</option>
-                <option value="boarding">🏠 Pet Boarding</option>
-                <option value="other">🌟 Other Services</option>
+                <option value="vet">Veterinary Care</option>
+                <option value="groomer">Grooming</option>
+                <option value="trainer">Training</option>
+                <option value="walker">Dog Walking</option>
+                <option value="boarding">Pet Boarding</option>
+                <option value="other">Other Services</option>
               </select>
             </div>
 
             {/* Your Name */}
             <div>
-              <label htmlFor="inquirerName" className="block text-base font-semibold text-blue-800 mb-2 flex items-center gap-2">
-                <span>👤</span> Your Name
+              <label htmlFor="inquirerName" className="block text-sm text-gray-500 mb-1">
+                Your Name
               </label>
               <input
                 type="text"
@@ -114,15 +111,15 @@ export default function ServiceInquiryForm({ petId, petName }: ServiceInquiryFor
                 value={formData.inquirerName}
                 onChange={handleChange}
                 required
-                className="w-full px-5 py-3 border-2 border-blue-200 rounded-xl focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all text-base text-gray-900 bg-blue-50/30"
+                className="w-full px-4 py-2.5 border border-gray-300 focus:outline-none focus:border-gray-900 transition-colors text-base text-gray-900"
                 placeholder="Enter your name"
               />
             </div>
 
             {/* Email */}
             <div>
-              <label htmlFor="inquirerEmail" className="block text-base font-semibold text-blue-800 mb-2 flex items-center gap-2">
-                <span>📧</span> Your Email
+              <label htmlFor="inquirerEmail" className="block text-sm text-gray-500 mb-1">
+                Your Email
               </label>
               <input
                 type="email"
@@ -131,15 +128,15 @@ export default function ServiceInquiryForm({ petId, petName }: ServiceInquiryFor
                 value={formData.inquirerEmail}
                 onChange={handleChange}
                 required
-                className="w-full px-5 py-3 border-2 border-blue-200 rounded-xl focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all text-base text-gray-900 bg-blue-50/30"
+                className="w-full px-4 py-2.5 border border-gray-300 focus:outline-none focus:border-gray-900 transition-colors text-base text-gray-900"
                 placeholder="your.email@example.com"
               />
             </div>
 
             {/* Phone */}
             <div>
-              <label htmlFor="inquirerPhone" className="block text-base font-semibold text-blue-800 mb-2 flex items-center gap-2">
-                <span>📱</span> Your Phone
+              <label htmlFor="inquirerPhone" className="block text-sm text-gray-500 mb-1">
+                Your Phone
               </label>
               <input
                 type="tel"
@@ -148,15 +145,15 @@ export default function ServiceInquiryForm({ petId, petName }: ServiceInquiryFor
                 value={formData.inquirerPhone}
                 onChange={handleChange}
                 required
-                className="w-full px-5 py-3 border-2 border-blue-200 rounded-xl focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all text-base text-gray-900 bg-blue-50/30"
+                className="w-full px-4 py-2.5 border border-gray-300 focus:outline-none focus:border-gray-900 transition-colors text-base text-gray-900"
                 placeholder="+1 (555) 123-4567"
               />
             </div>
 
             {/* Location */}
             <div>
-              <label htmlFor="location" className="block text-base font-semibold text-blue-800 mb-2 flex items-center gap-2">
-                <span>📍</span> Your Location <span className="text-sm font-normal text-blue-600">(Optional)</span>
+              <label htmlFor="location" className="block text-sm text-gray-500 mb-1">
+                Your Location (Optional)
               </label>
               <input
                 type="text"
@@ -164,15 +161,15 @@ export default function ServiceInquiryForm({ petId, petName }: ServiceInquiryFor
                 name="location"
                 value={formData.location}
                 onChange={handleChange}
-                className="w-full px-5 py-3 border-2 border-blue-200 rounded-xl focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all text-base text-gray-900 bg-blue-50/30"
+                className="w-full px-4 py-2.5 border border-gray-300 focus:outline-none focus:border-gray-900 transition-colors text-base text-gray-900"
                 placeholder="City, State"
               />
             </div>
 
             {/* Message */}
             <div>
-              <label htmlFor="message" className="block text-base font-semibold text-blue-800 mb-2 flex items-center gap-2">
-                <span>✍️</span> Tell us what you need
+              <label htmlFor="message" className="block text-sm text-gray-500 mb-1">
+                Details
               </label>
               <textarea
                 id="message"
@@ -181,59 +178,46 @@ export default function ServiceInquiryForm({ petId, petName }: ServiceInquiryFor
                 onChange={handleChange}
                 required
                 rows={4}
-                className="w-full px-5 py-3 border-2 border-blue-200 rounded-xl focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all text-base text-gray-900 bg-blue-50/30"
+                className="w-full px-4 py-2.5 border border-gray-300 focus:outline-none focus:border-gray-900 transition-colors text-base text-gray-900"
                 placeholder="Describe your needs..."
               />
             </div>
 
             {/* Submit Status Messages */}
             {submitStatus === "success" && (
-              <div className="bg-gradient-to-r from-green-100 to-emerald-100 border-2 border-green-300 rounded-2xl p-5 shadow-md">
-                <div className="flex items-start gap-3">
-                  <span className="text-3xl">✅</span>
-                  <div>
-                    <p className="text-green-900 font-bold text-base">Inquiry submitted successfully!</p>
-                    <p className="text-green-700 text-base mt-1">
-                      We'll connect you with local service providers shortly.
-                    </p>
-                  </div>
-                </div>
+              <div className="bg-gray-50 border border-gray-200 p-4">
+                <p className="text-gray-900 font-medium text-sm">Inquiry submitted successfully</p>
+                <p className="text-gray-600 text-sm mt-1">
+                  We'll connect you with local service providers shortly.
+                </p>
               </div>
             )}
 
             {submitStatus === "error" && (
-              <div className="bg-gradient-to-r from-red-100 to-rose-100 border-2 border-red-300 rounded-2xl p-5 shadow-md">
-                <div className="flex items-start gap-3">
-                  <span className="text-3xl">❌</span>
-                  <div>
-                    <p className="text-red-900 font-bold text-base">Oops! Something went wrong</p>
-                    <p className="text-red-700 text-base mt-1">
-                      Please try again or contact support.
-                    </p>
-                  </div>
-                </div>
+              <div className="bg-gray-50 border border-gray-200 p-4">
+                <p className="text-gray-900 font-medium text-sm">Error submitting inquiry</p>
+                <p className="text-gray-600 text-sm mt-1">
+                  Please try again or contact support.
+                </p>
               </div>
             )}
 
             {/* Privacy Notice */}
-            <div className="bg-gradient-to-r from-purple-50 to-pink-50 border-2 border-purple-200 rounded-2xl p-5">
-              <div className="flex items-start gap-2">
-                <span className="text-xl">🔒</span>
-                <p className="text-sm text-purple-900">
-                  By submitting this form, you consent to us collecting your contact information to connect you with
-                  service providers. We also collect your IP address and browser information to prevent spam.
-                  Your data will be deleted after 90 days. Read our{" "}
-                  <a
-                    href="/terms-privacy"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-purple-700 underline hover:text-purple-900 font-semibold decoration-2"
-                  >
-                    Terms & Privacy Policy
-                  </a>
-                  .
-                </p>
-              </div>
+            <div className="bg-gray-50 border border-gray-200 p-4">
+              <p className="text-xs text-gray-600">
+                By submitting this form, you consent to us collecting your contact information to connect you with
+                service providers. We also collect your IP address and browser information to prevent spam.
+                Your data will be deleted after 90 days. Read our{" "}
+                <a
+                  href="/terms-privacy"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-900 underline hover:text-gray-700"
+                >
+                  Terms & Privacy Policy
+                </a>
+                .
+              </p>
             </div>
 
             {/* Submit Button */}
@@ -241,19 +225,9 @@ export default function ServiceInquiryForm({ petId, petName }: ServiceInquiryFor
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="btn-friendly w-full bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white px-8 py-4 text-center font-bold rounded-full text-lg shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                className="w-full bg-gray-900 text-white px-6 py-3 text-center font-medium hover:bg-gray-800 transition-colors text-sm disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {isSubmitting ? (
-                  <>
-                    <span className="animate-pulse">⏳</span>
-                    Submitting...
-                  </>
-                ) : (
-                  <>
-                    <span>📨</span>
-                    Request Service
-                  </>
-                )}
+                {isSubmitting ? "Submitting..." : "Request Service"}
               </button>
             </div>
           </div>

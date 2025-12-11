@@ -1,18 +1,8 @@
 @import "tailwindcss";
 
 :root {
-  /* Warm & Friendly Color Palette */
-  --background: #FFFDF7;
-  --foreground: #374151;
-  --warm-cream: #FFF9F0;
-  --warm-beige: #F3E8D8;
-  --warm-orange: #FF8B67;
-  --warm-coral: #FF6B47;
-  --soft-purple: #A78BFA;
-  --soft-lavender: #C4B5FD;
-  --friendly-green: #10B981;
-  --soft-green: #6EE7B7;
-  --warm-shadow: rgba(251, 146, 60, 0.1);
+  --background: #ffffff;
+  --foreground: #171717;
 }
 
 @theme inline {
@@ -22,10 +12,8 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #1F2937;
-    --foreground: #F3F4F6;
-    --warm-cream: #374151;
-    --warm-beige: #4B5563;
+    --background: #0a0a0a;
+    --foreground: #ededed;
   }
 }
 
@@ -33,41 +21,4 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-}
-
-/* Friendly animations */
-@keyframes bounce-soft {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-4px);
-  }
-}
-
-@keyframes pulse-soft {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.8;
-  }
-}
-
-.animate-bounce-soft {
-  animation: bounce-soft 2s ease-in-out infinite;
-}
-
-.animate-pulse-soft {
-  animation: pulse-soft 2s ease-in-out infinite;
-}
-
-/* Friendly button hover effect */
-.btn-friendly {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.btn-friendly:hover {
-  transform: translateY(-2px) scale(1.02);
-  box-shadow: 0 10px 25px -5px var(--warm-shadow);
 }
