@@ -1,4 +1,5 @@
-import { Client, Databases, Users } from 'appwrite';
+import { Client, Databases } from 'appwrite';
+import { Client as ServerClient, Users } from 'node-appwrite';
 
 // Initialize Appwrite Client (public)
 const client = new Client();
@@ -8,7 +9,7 @@ client
   .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID || '');
 
 // Initialize server-side client with API key (for accessing user data)
-const serverClient = new Client();
+const serverClient = new ServerClient();
 
 serverClient
   .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT || 'https://cloud.appwrite.io/v1')

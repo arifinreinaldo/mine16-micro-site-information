@@ -5,18 +5,22 @@ A beautiful and responsive microsite built with Next.js and Tailwind CSS to show
 ## Features
 
 - **Dynamic Data Loading**: Integrated with Appwrite to fetch pet data dynamically via URL parameters
+- **Owner Phone Display**: Automatically retrieves and displays owner phone number from Appwrite authentication table
 - **Image Carousel**: Support for multiple pet photos with automatic carousel navigation
-- **Found Pet Report Form**: Allow finders to submit reports when they find a pet, notifying the owner
+- **Found Pet Report Form**: Allow finders to submit reports when they find a pet, with DDoS protection
+- **Rate Limiting**: IP-based rate limiting (3 submissions per 15 minutes) to prevent spam
 - Modern, responsive design with gradient backgrounds
 - Detailed pet profile with personality traits
 - Medical information display
-- Owner contact section with clickable email and phone links
-- Fully customizable pet and owner information
+- Microchip ID display for pet identification
+- Emoji avatar fallback when no images are provided (🐕 🐈 🦜 🐾)
+- Fully customizable pet information
 - Static fallback data when no parameter is provided
 - Loading states and error handling
+- Footer with Terms & Privacy Policy link
 - Ready for deployment on Vercel
 - TypeScript for type safety
-- Tailwind CSS for styling
+- Tailwind CSS v4 for styling
 
 ## Project Structure
 
@@ -72,11 +76,15 @@ cp .env.local.example .env.local
 Then edit `.env.local` and add your Appwrite credentials:
 
 ```env
+# Public variables (exposed to client)
 NEXT_PUBLIC_APPWRITE_ENDPOINT=https://cloud.appwrite.io/v1
 NEXT_PUBLIC_APPWRITE_PROJECT_ID=your_project_id
 NEXT_PUBLIC_APPWRITE_DATABASE_ID=your_database_id
 NEXT_PUBLIC_APPWRITE_COLLECTION_ID=your_collection_id
 NEXT_PUBLIC_APPWRITE_FOUND_PETS_COLLECTION_ID=your_found_pets_collection_id  # Optional: for Found Pet Reports
+
+# Server-side only (for accessing user phone from auth table)
+APPWRITE_API_READ_KEY=your_api_key_here  # Required: Get from Appwrite Console → Settings → API Keys
 ```
 
 4. Run the development server:
@@ -150,8 +158,8 @@ This microsite uses Appwrite as the backend database to store pet information. F
 Click **"Attributes"** tab, then **"Create Attribute"** for each:
 
 **Note on Required Fields:**
-- Only **petName**, **species**, and **breed** are required
-- All other pet detail fields (age, gender, color, weight, description, personality, medicalInfo) are optional
+- Only **petName**, **breed**, **petType**, and **userId** are required
+- All other pet detail fields (age, gender, color, weight, description, personality, medicalInfo, microchip) are optional
 - This allows you to create minimal profiles and add details later
 - Empty optional fields will automatically be hidden in the UI
 
@@ -163,114 +171,84 @@ Click **"Attributes"** tab, then **"Create Attribute"** for each:
    - Required: ✅ Yes
    - Array: ❌ No
 
-2. **species**
+2. **breed**
    - Type: `String`
    - Size: `100`
    - Required: ✅ Yes
    - Array: ❌ No
 
-3. **breed**
+3. **age**
    - Type: `String`
-   - Size: `100`
-   - Required: ✅ Yes
-   - Array: ❌ No
-
-4. **age**
-   - Type: `Integer`
-   - Min: `0`
-   - Max: `100`
+   - Size: `50`
    - Required: ❌ No
    - Array: ❌ No
+   - **Note:** Stored as string for flexible age formats (e.g., "3", "2.5", "3 months")
 
-5. **gender**
+4. **gender**
    - Type: `String`
    - Size: `50`
    - Required: ❌ No
    - Array: ❌ No
 
-6. **color**
+5. **color**
    - Type: `String`
    - Size: `100`
    - Required: ❌ No
    - Array: ❌ No
 
-7. **weight**
+6. **weight**
    - Type: `String`
    - Size: `50`
    - Required: ❌ No
    - Array: ❌ No
 
-8. **description**
+7. **description**
    - Type: `String`
    - Size: `1000`
    - Required: ❌ No
    - Array: ❌ No
 
-9. **personality**
+8. **personality**
    - Type: `String`
    - Size: `100`
    - Required: ❌ No
-   - **Array: ✅ YES** (This is important!)
+   - **Array: ✅ YES or ❌ NO** (Can be either - both string and array are supported)
+   - **Note:** Can store as array OR comma-separated string
 
-10. **medicalInfo**
+9. **medicalInfo**
+   - Type: `String`
+   - Size: `500`
+   - Required: ❌ No
+   - Array: ❌ No
+
+10. **microchip**
     - Type: `String`
-    - Size: `500`
+    - Size: `100`
     - Required: ❌ No
     - Array: ❌ No
+    - **Note:** Microchip ID number for pet identification
 
-11. **imageUrl**
-    - Type: `String`
-    - Size: `500`
-    - Required: ❌ No
-    - Array: ❌ No
-    - **Note:** Deprecated - Use `imageUrls` for better multi-image support
-
-12. **imageUrls**
+11. **imageUrls**
     - Type: `String`
     - Size: `2000`
     - Required: ❌ No
     - Array: ✅ YES (This allows multiple photos!)
     - **Note:** Store multiple image URLs for carousel display
 
-13. **petType**
+12. **petType**
     - Type: `String` (enum)
     - Size: `20`
-    - Required: ❌ No
+    - Required: ✅ Yes
     - Array: ❌ No
-    - **Valid values:** `dog`, `cat`, `other`
-    - **Note:** Determines the default avatar emoji displayed
+    - **Valid values:** `dog`, `cat`, `bird`, `other`
+    - **Note:** Determines the default avatar emoji displayed (🐕 🐈 🦜 🐾)
 
-#### Owner Information Attributes:
-
-14. **ownerName**
+13. **userId**
     - Type: `String`
     - Size: `255`
     - Required: ✅ Yes
     - Array: ❌ No
-
-15. **ownerEmail**
-    - Type: `String`
-    - Size: `255`
-    - Required: ✅ Yes
-    - Array: ❌ No
-
-16. **ownerPhone**
-    - Type: `String`
-    - Size: `50`
-    - Required: ✅ Yes
-    - Array: ❌ No
-
-17. **ownerAddress**
-    - Type: `String`
-    - Size: `500`
-    - Required: ❌ No
-    - Array: ❌ No
-
-18. **preferredContact**
-    - Type: `String`
-    - Size: `50`
-    - Required: ✅ Yes
-    - Array: ❌ No
+    - **Note:** Appwrite user ID from authentication table - used to fetch owner's phone number
 
 ### Step 6: Configure Permissions
 
@@ -285,7 +263,22 @@ Click **"Attributes"** tab, then **"Create Attribute"** for each:
 
 **Note**: Only enable "Read" permission for public access. Never enable "Create", "Update", or "Delete" for "Any" role for security reasons.
 
-### Step 7: Add Pet Data
+### Step 7: Create API Key for Server-Side Access
+
+**Required to fetch owner phone numbers from Appwrite authentication:**
+
+1. Go to your Appwrite project
+2. Click **"Settings"** in the left sidebar
+3. Click **"API Keys"** tab
+4. Click **"Create API Key"**
+5. Enter a name: `Server Access Key` or similar
+6. Under **Scopes**, select:
+   - ✅ **users.read** (required to fetch user phone numbers)
+7. Click **"Create"**
+8. **Copy the API key** - you'll need it for the `APPWRITE_API_READ_KEY` environment variable
+9. **Important**: Keep this key secure - never commit it to version control or expose it to the client
+
+### Step 8: Add Pet Data
 
 1. **Create Your First Pet Document**
    - Go to the **"Documents"** tab in your collection
@@ -295,12 +288,9 @@ Click **"Attributes"** tab, then **"Create Attribute"** for each:
    **Required Fields:**
    ```
    petName: Luna
-   species: Dog
    breed: Golden Retriever
-   ownerName: John Doe
-   ownerEmail: john.doe@example.com
-   ownerPhone: +1 (555) 123-4567
-   preferredContact: Email
+   petType: dog
+   userId: [Your Appwrite User ID from Auth table]
    ```
 
    **Optional Fields** (add as desired):
@@ -312,10 +302,14 @@ Click **"Attributes"** tab, then **"Create Attribute"** for each:
    description: Luna is a friendly and energetic Golden Retriever...
    personality: ["Friendly and social", "Loves to play fetch", "Great with children"]
    medicalInfo: Up to date on all vaccinations. Spayed.
+   microchip: 123456789012345
    imageUrls: (leave empty for emoji avatar, or add image URLs)
-   petType: dog
-   ownerAddress: 123 Pet Street, Pet City, PC 12345
    ```
+
+   **Important Notes:**
+   - The `userId` field should be the Appwrite user ID from your authentication table
+   - Owner's phone number is automatically fetched from the auth table using the `userId`
+   - Make sure the user account has a phone number registered in Appwrite Auth
 
 2. **Copy the Document ID**
    - After creating the document, you'll see it listed
@@ -324,11 +318,11 @@ Click **"Attributes"** tab, then **"Create Attribute"** for each:
    - It looks like: `6745mno123pqr456789`
    - This ID is what you'll use in your URL: `?param=6745mno123pqr456789`
 
-### Step 7A: Adding Photos to Your Pet Profile
+### Step 9: Adding Photos to Your Pet Profile
 
 The microsite supports multiple photos with an automatic carousel. Here's how to add them:
 
-**Note:** If you don't add any images, the microsite will automatically display a cute emoji avatar based on your pet's type (🐕 for dog, 🐈 for cat, 🐾 for other). You can start without images and add them later!
+**Note:** If you don't add any images, the microsite will automatically display a cute emoji avatar based on your pet's type (🐕 for dog, 🐈 for cat, 🦜 for bird, 🐾 for other). You can start without images and add them later!
 
 #### Option 1: Using Appwrite Storage (Recommended)
 
@@ -407,6 +401,7 @@ For testing purposes, you can use Unsplash URLs:
 - **Emoji Fallback**: If no images are provided, automatically shows a cute emoji avatar based on petType:
   - `dog` → 🐕 Dog emoji
   - `cat` → 🐈 Cat emoji
+  - `bird` → 🦜 Bird emoji
   - `other` → 🐾 Paw prints emoji
 
 #### Tips for Best Results
@@ -417,7 +412,7 @@ For testing purposes, you can use Unsplash URLs:
 - **Variety**: Include different angles, close-ups, and action shots
 - **Quality**: Use clear, well-lit photos
 
-### Step 8: Configure Your Application
+### Step 10: Configure Your Application
 
 1. **Update Environment Variables**
 
@@ -428,9 +423,11 @@ For testing purposes, you can use Unsplash URLs:
    NEXT_PUBLIC_APPWRITE_PROJECT_ID=your_project_id_here
    NEXT_PUBLIC_APPWRITE_DATABASE_ID=your_database_id_here
    NEXT_PUBLIC_APPWRITE_COLLECTION_ID=your_collection_id_here
+   NEXT_PUBLIC_APPWRITE_FOUND_PETS_COLLECTION_ID=your_found_pets_collection_id_here  # Optional
+   APPWRITE_API_READ_KEY=your_api_key_here  # From Step 7
    ```
 
-   Replace each value with the IDs you copied in the previous steps.
+   Replace each value with the IDs and API key you copied in the previous steps.
 
 2. **Example Configuration**
 
@@ -440,9 +437,10 @@ For testing purposes, you can use Unsplash URLs:
    NEXT_PUBLIC_APPWRITE_DATABASE_ID=6745xyz123abc456789
    NEXT_PUBLIC_APPWRITE_COLLECTION_ID=6745qrs123tuv456789
    NEXT_PUBLIC_APPWRITE_FOUND_PETS_COLLECTION_ID=6745def456ghi789012  # Optional
+   APPWRITE_API_READ_KEY=standard_abc123def456...xyz789  # Server-side only
    ```
 
-### Step 9: Test Your Connection
+### Step 11: Test Your Connection
 
 1. **Restart Your Development Server**
    ```bash
@@ -458,14 +456,15 @@ For testing purposes, you can use Unsplash URLs:
 
 3. **Verify Data Loads**
    - You should see your pet's information displayed
-   - Check that the owner contact information is correct
+   - Check that the owner's phone number is displayed (fetched from auth table)
    - If you see "Pet Not Found", double-check:
      - Document ID is correct
      - Permissions are set to allow "Read" for "Any"
-     - Environment variables are correct
+     - Environment variables are correct (including APPWRITE_API_READ_KEY)
      - You've restarted the dev server
+     - The userId field is valid and user has a phone number in auth
 
-### Step 10: Deploy to Vercel (with Appwrite)
+### Step 12: Deploy to Vercel (with Appwrite)
 
 1. **Push to GitHub**
    ```bash
@@ -479,11 +478,13 @@ For testing purposes, you can use Unsplash URLs:
    - Import your repository
    - **Before deploying**, add environment variables:
      - Click "Environment Variables"
-     - Add required variables:
+     - Add required public variables:
        - `NEXT_PUBLIC_APPWRITE_ENDPOINT`
        - `NEXT_PUBLIC_APPWRITE_PROJECT_ID`
        - `NEXT_PUBLIC_APPWRITE_DATABASE_ID`
        - `NEXT_PUBLIC_APPWRITE_COLLECTION_ID`
+     - Add required server-side variable:
+       - `APPWRITE_API_READ_KEY` (from Step 7)
      - Add optional variable (if using Found Pet Reports):
        - `NEXT_PUBLIC_APPWRITE_FOUND_PETS_COLLECTION_ID`
      - Use the same values from your `.env.local`
@@ -491,7 +492,7 @@ For testing purposes, you can use Unsplash URLs:
 
 3. **Test Production**
    - After deployment, visit: `https://your-app.vercel.app/?param=YOUR_DOCUMENT_ID`
-   - Verify everything works in production
+   - Verify everything works in production including phone number display
 
 ### Troubleshooting
 
@@ -508,11 +509,19 @@ For testing purposes, you can use Unsplash URLs:
 - ✅ Check Appwrite console for service status
 
 **Problem: Personality traits not showing**
-- ✅ Ensure "personality" attribute is set as an Array
-- ✅ Enter personality traits as separate items in the array
+- ✅ Ensure "personality" attribute is either an Array or comma-separated string
+- ✅ Enter personality traits as separate items in the array OR comma-separated values
+
+**Problem: Owner phone number not showing**
+- ✅ Verify `APPWRITE_API_READ_KEY` is set correctly
+- ✅ Check API key has `users.read` scope
+- ✅ Confirm user exists in Appwrite Auth table
+- ✅ Verify user has a phone number registered
+- ✅ Check that `userId` field in pet document is correct
 
 **Problem: Environment variables not working on Vercel**
-- ✅ Double-check all variable names start with `NEXT_PUBLIC_`
+- ✅ Double-check public variables start with `NEXT_PUBLIC_`
+- ✅ Ensure `APPWRITE_API_READ_KEY` does NOT have `NEXT_PUBLIC_` prefix
 - ✅ Redeploy after adding/changing environment variables
 - ✅ Check Vercel project settings → Environment Variables
 
@@ -524,6 +533,8 @@ For testing purposes, you can use Unsplash URLs:
 | **Database ID** | Databases → Click database → Copy from URL or settings |
 | **Collection ID** | Database → Collections → Click collection → Copy from URL |
 | **Document ID** | Collection → Documents → Click document → Top of page |
+| **User ID** | Auth → Users → Click user → Copy User ID |
+| **API Key** | Settings → API Keys → Create/View API Key |
 
 ### Adding More Pets
 
@@ -531,11 +542,16 @@ To add additional pets to your microsite:
 
 1. Go to your Appwrite collection
 2. Click "Create Document"
-3. Fill in all the pet and owner information
-4. Copy the new Document ID
-5. Share the URL: `https://your-domain.com/?param=NEW_DOCUMENT_ID`
+3. Fill in all the required pet information:
+   - `petName`
+   - `breed`
+   - `petType` (dog, cat, bird, or other)
+   - `userId` (User ID from Appwrite Auth table)
+4. Add optional fields as desired (age, gender, color, weight, etc.)
+5. Copy the new Document ID
+6. Share the URL: `https://your-domain.com/?param=NEW_DOCUMENT_ID`
 
-Each pet gets its own unique URL based on its Document ID!
+Each pet gets its own unique URL based on its Document ID! The owner's phone number will be automatically fetched from the auth table using the `userId`.
 
 ### Setting Up Found Pets Collection (Optional)
 
@@ -592,9 +608,18 @@ The microsite intelligently handles pet images:
 - Automatically shows a cute emoji avatar based on `petType`:
   - **dog**: 🐕 Dog emoji
   - **cat**: 🐈 Cat emoji
+  - **bird**: 🦜 Bird emoji
   - **other**: 🐾 Paw prints emoji
 
 Set the `petType` field in your Appwrite document to get the appropriate emoji avatar.
+
+### Owner Contact Display
+
+When viewing a pet profile:
+- The owner's phone number is automatically retrieved from the Appwrite authentication table
+- Displayed in a prominent blue section above the "Found Pet" form
+- Clickable phone link for easy dialing
+- Only shows if the user has a phone number registered in their Appwrite account
 
 ### No Parameter Behavior
 
@@ -699,36 +724,32 @@ This ensures legitimate reports are processed while blocking malicious activity.
 
 ## Customization
 
-### Update Pet Information
+### Update Demo Pet Information
 
-Edit the `data/petData.ts` file to customize your pet's information:
+Edit the `data/petData.ts` file to customize the AIBO demo pet's information:
 
 ```typescript
-export const petInfo: Pet = {
+export const aiboInfo: Pet = {
   name: "Your Pet's Name",
-  species: "Dog/Cat/etc",
   breed: "Breed Name",
-  age: 3,
+  petType: "dog",
+  age: "3",
   // ... other fields
 };
 ```
 
-### Update Owner Contact Information
-
-Edit the owner information in the same file:
-
-```typescript
-export const ownerInfo: Owner = {
-  name: "Your Name",
-  email: "your.email@example.com",
-  phone: "+1 (555) 123-4567",
-  // ... other fields
-};
-```
+**Note**: Owner contact information is no longer stored in the pet data. It's automatically fetched from the Appwrite authentication table using the `userId` field.
 
 ### Styling
 
-The project uses Tailwind CSS. Modify the components in the `components/` directory to change the design.
+The project uses Tailwind CSS v4. Modify the components in the `components/` directory to change the design.
+
+### Footer
+
+The application includes a footer with a link to Terms & Privacy Policy:
+- Displays on all pages (no parameter, AIBO demo, pet not found, and regular pet profiles)
+- Links to `/terms-privacy` route
+- Customize the footer in `app/page.tsx`
 
 ## Deploy on Vercel
 
@@ -737,8 +758,11 @@ The easiest way to deploy this microsite is using Vercel:
 1. Push your code to GitHub
 2. Visit [Vercel](https://vercel.com/new)
 3. Import your repository
-4. Vercel will automatically detect Next.js and configure the build settings
-5. Click "Deploy"
+4. **Add environment variables** (see Step 12 in Appwrite Setup for details):
+   - All public variables (NEXT_PUBLIC_*)
+   - Server-side API key (APPWRITE_API_READ_KEY)
+5. Vercel will automatically detect Next.js and configure the build settings
+6. Click "Deploy"
 
 Alternatively, you can use the Vercel CLI:
 
@@ -747,12 +771,16 @@ npm install -g vercel
 vercel
 ```
 
+**Important**: Don't forget to add all environment variables in the Vercel dashboard before deploying!
+
 ## Technologies Used
 
-- [Next.js 16](https://nextjs.org/) - React framework with App Router
+- [Next.js 16](https://nextjs.org/) - React framework with App Router and server-side rendering
 - [TypeScript](https://www.typescriptlang.org/) - Type safety
-- [Tailwind CSS](https://tailwindcss.com/) - Styling
-- [Appwrite](https://appwrite.io/) - Backend database
+- [Tailwind CSS v4](https://tailwindcss.com/) - Styling with PostCSS
+- [Appwrite](https://appwrite.io/) - Backend database and authentication
+  - `appwrite` - Client-side SDK for browser operations
+  - `node-appwrite` - Server-side SDK for Node.js operations (Users API)
 - [Vercel](https://vercel.com/) - Deployment platform
 
 ## License

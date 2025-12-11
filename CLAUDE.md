@@ -37,12 +37,15 @@ npm run lint         # Run ESLint
 
 ### Appwrite Integration
 - **Client Setup**: `lib/appwrite.ts` initializes two Appwrite SDK clients:
-  - Public client for database access (uses public environment variables)
-  - Server-side client with API key for Users service (server-side only)
+  - Public client from `appwrite` package for database access (uses public environment variables)
+  - Server-side client from `node-appwrite` package with API key for Users service (server-side only)
+- **SDK Packages**: Uses two different Appwrite packages:
+  - `appwrite` - Client-side SDK for browser operations (Databases)
+  - `node-appwrite` - Server-side SDK for Node.js operations (Users API)
 - **Data Fetching**: `lib/getPetData.ts` contains two functions:
   - `getPetDataById(documentId)` - Fetches by document ID (currently used)
   - `getPetDataByCode(code)` - Fetches by querying a code field (not currently used)
-- **User Phone Fetching**: Both data fetching functions call `getUserPhone(userId)` to retrieve the owner's phone number from the Appwrite auth table using the Users API
+- **User Phone Fetching**: Both data fetching functions call `getUserPhone(userId)` to retrieve the owner's phone number from the Appwrite auth table using the Users API from `node-appwrite`
 - **Data Transformation**: Appwrite documents use field names like `petName`, etc. These are mapped to internal `Pet` interface
 - **Personality Field**: Handles both array and string formats (comma-separated or JSON stringified)
 - **Image URLs**: The `parseImageUrls()` helper supports:
