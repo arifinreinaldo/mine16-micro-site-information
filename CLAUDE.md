@@ -173,6 +173,7 @@ Configured for Vercel deployment via `vercel.json`. When deploying:
 - Empty optional fields are automatically hidden in the UI
 - Demo mode (`?param=AIBO`, case-insensitive) is handled entirely with static data from `data/petData.ts`, no Appwrite call is made
 - **Important**: The `Pet` type expects `imageUrls` as an array after transformation, and `personality` as a string
+- **Type Coercion**: Appwrite user preferences may store values as numbers or strings. The `showContact` preference handling must check for both `1` (number) and `"1"` (string) to ensure proper boolean conversion: `showContact_value === 1 || showContact_value === "1"`
 
 ### Component Architecture
 - `app/page.tsx` is a server component that handles data fetching and routing

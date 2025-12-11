@@ -247,30 +247,6 @@ export default async function Home({ searchParams }: HomeProps) {
 
   const { pet } = data;
 
-  // DEBUG: Log pet data to check values
-  console.log('=== DEBUG: Pet Data ===');
-  console.log('pet.ownerPhone:', pet.ownerPhone);
-  console.log('pet.ownerPhone type:', typeof pet.ownerPhone);
-  console.log('pet.ownerPhone truthy?', !!pet.ownerPhone);
-  console.log('pet.membership:', pet.membership);
-  console.log('pet.membership type:', typeof pet.membership);
-  console.log('pet.membership === "pro"?', pet.membership === "pro");
-  console.log('pet.showContact:', pet.showContact);
-  console.log('pet.showContact type:', typeof pet.showContact);
-  console.log('pet.showContact truthy?', !!pet.showContact);
-  console.log('========================');
-
-  // DEBUG: Log conditional logic results
-  console.log('=== DEBUG: Conditional Logic ===');
-  console.log('Is Non-Pro contact visible?', pet.ownerPhone && pet.membership !== "pro");
-  console.log('Is Pro contact visible?', pet.ownerPhone && pet.membership === "pro" && pet.showContact);
-  console.log('Full Pro condition breakdown:');
-  console.log('  - pet.ownerPhone:', !!pet.ownerPhone);
-  console.log('  - pet.membership === "pro":', pet.membership === "pro");
-  console.log('  - pet.showContact:', !!pet.showContact);
-  console.log('  - Combined:', pet.ownerPhone && pet.membership === "pro" && pet.showContact);
-  console.log('================================');
-
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}

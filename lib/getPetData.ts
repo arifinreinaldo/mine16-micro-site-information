@@ -60,29 +60,12 @@ async function getUserContactData(userId: string): Promise<UserContactData> {
     // Get user preferences (key-value pairs)
     const prefs = user.prefs || {};
 
-    // DEBUG: Log raw prefs object
-    console.log('=== DEBUG: Raw Appwrite User Data ===');
-    console.log('userId:', userId);
-    console.log('user.phone:', user.phone);
-    console.log('Full prefs object:', JSON.stringify(prefs, null, 2));
-    console.log('======================================');
-
     // Extract membership and showContact from preferences
     const membership = prefs.membership as string | undefined;
-    const showContact_value = prefs.showContact as string | undefined;
+    const showContact_value = prefs.showContact; // Can be number, string, or undefined
 
-    // Convert showContact to boolean (only "1" means true)
-    const showContact = showContact_value === "1";
-
-    // DEBUG: Log the transformation
-    console.log('=== DEBUG: User Contact Data Transformation ===');
-    console.log('prefs.membership:', membership);
-    console.log('prefs.membership type:', typeof membership);
-    console.log('prefs.showContact (raw):', showContact_value);
-    console.log('prefs.showContact type:', typeof showContact_value);
-    console.log('showContact_value === "1"?', showContact_value === "1");
-    console.log('showContact (converted to boolean):', showContact);
-    console.log('===============================================');
+    // Convert showContact to boolean (1 or "1" means true)
+    const showContact = showContact_value === 1 || showContact_value === "1";
 
     // Return all contact data
     return {
@@ -144,13 +127,6 @@ export async function getPetDataByCode(code: string): Promise<PetDataResponse | 
       showContact: userContactData.showContact
     };
 
-    // DEBUG: Log final Pet object values
-    console.log('=== DEBUG: Final Pet Object ===');
-    console.log('pet.ownerPhone:', pet.ownerPhone);
-    console.log('pet.membership:', pet.membership);
-    console.log('pet.showContact:', pet.showContact);
-    console.log('===============================');
-
     return { pet };
   } catch (error) {
     console.error('Error fetching pet data from Appwrite:', error);
@@ -189,13 +165,6 @@ export async function getPetDataById(documentId: string): Promise<PetDataRespons
       membership: userContactData.membership,
       showContact: userContactData.showContact
     };
-
-    // DEBUG: Log final Pet object values
-    console.log('=== DEBUG: Final Pet Object ===');
-    console.log('pet.ownerPhone:', pet.ownerPhone);
-    console.log('pet.membership:', pet.membership);
-    console.log('pet.showContact:', pet.showContact);
-    console.log('===============================');
 
     return { pet };
   } catch (error) {
