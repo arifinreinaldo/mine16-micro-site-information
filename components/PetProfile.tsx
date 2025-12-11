@@ -48,23 +48,28 @@ export default function PetProfile({ pet }: PetProfileProps) {
     <div className="w-full max-w-5xl mx-auto">
       <div className="bg-white border border-gray-200 shadow-sm overflow-hidden">
         {/* Header Section */}
-        <div className="border-b border-gray-200 p-8 bg-white">
+        <div className={`border-b p-8 ${pet.membership === "pro" ? "bg-gradient-to-b from-slate-50 to-white border-slate-200" : "bg-white border-gray-200"}`}>
           <div className="flex items-baseline gap-3">
-            <h1 className="text-4xl font-bold text-gray-900 flex items-center gap-2">
+            <h1 className={`text-4xl font-bold tracking-tight ${pet.membership === "pro" ? "text-slate-800" : "text-gray-900"}`}>
               {pet.name}
-              {pet.membership === "pro" && (
-                <svg className="w-9 h-9 text-yellow-500" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M12 2L14.5 7L20 8L16 12L17 18L12 15L7 18L8 12L4 8L9.5 7L12 2Z" stroke="currentColor" strokeWidth="0.5" strokeLinejoin="round"/>
-                  <circle cx="12" cy="10" r="1.5" fill="currentColor" opacity="0.9"/>
-                  <circle cx="9" cy="12" r="1" fill="currentColor" opacity="0.8"/>
-                  <circle cx="15" cy="12" r="1" fill="currentColor" opacity="0.8"/>
-                  <path d="M10 7.5L12 6L14 7.5" stroke="currentColor" strokeWidth="0.8" fill="none" strokeLinecap="round"/>
-                </svg>
-              )}
             </h1>
-            <span className="text-lg text-gray-500">•</span>
-            <p className="text-lg text-gray-600">{pet.breed}</p>
+            {pet.membership === "pro" && (
+              <div className="flex items-center gap-1.5 opacity-60 hover:opacity-100 transition-opacity duration-300">
+                <svg className="w-4 h-4 text-slate-600" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                </svg>
+                <span className="text-xs font-medium text-slate-600 tracking-widest uppercase">Verified</span>
+              </div>
+            )}
+            <span className="text-lg text-gray-400">•</span>
+            <p className={`text-lg ${pet.membership === "pro" ? "text-slate-600 font-medium" : "text-gray-600"}`}>{pet.breed}</p>
           </div>
+          {pet.membership === "pro" && (
+            <div className="mt-1 flex items-center gap-1.5">
+              <div className="h-px w-8 bg-gradient-to-r from-slate-300 to-transparent"></div>
+              <span className="text-xs text-slate-400 tracking-wide">Premium member</span>
+            </div>
+          )}
         </div>
 
         {/* Content Section */}
