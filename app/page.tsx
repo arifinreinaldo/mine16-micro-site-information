@@ -129,6 +129,25 @@ export default async function Home({ searchParams }: HomeProps) {
             </p>
           </div>
           <PetProfile pet={pet} />
+
+          {/* Owner Contact Information */}
+          {pet.ownerPhone && (
+            <div className="mt-8 mb-8 w-full max-w-5xl mx-auto">
+              <div className="bg-blue-50 border border-blue-200 p-6">
+                <h2 className="text-lg font-semibold text-blue-900 mb-2">Owner Contact</h2>
+                <div className="flex items-center gap-2 text-blue-800">
+                  <span className="text-sm font-medium">Phone:</span>
+                  <a
+                    href={`tel:${pet.ownerPhone}`}
+                    className="text-base font-semibold hover:underline"
+                  >
+                    {pet.ownerPhone}
+                  </a>
+                </div>
+              </div>
+            </div>
+          )}
+
           <FoundPetForm petId="AIBO" petName={pet.name} />
         </main>
 
@@ -207,6 +226,25 @@ export default async function Home({ searchParams }: HomeProps) {
       {/* Main Content */}
       <main className="max-w-6xl mx-auto px-4 py-12 pb-16">
         <PetProfile pet={pet} />
+
+        {/* Owner Contact Information */}
+        {pet.ownerPhone && (
+          <div className="mt-8 mb-8 w-full max-w-5xl mx-auto">
+            <div className="bg-blue-50 border border-blue-200 p-6">
+              <h2 className="text-lg font-semibold text-blue-900 mb-2">Owner Contact</h2>
+              <div className="flex items-center gap-2 text-blue-800">
+                <span className="text-sm font-medium">Phone:</span>
+                <a
+                  href={`tel:${pet.ownerPhone}`}
+                  className="text-base font-semibold hover:underline"
+                >
+                  {pet.ownerPhone}
+                </a>
+              </div>
+            </div>
+          </div>
+        )}
+
         <FoundPetForm petId={petId} petName={pet.name} />
       </main>
 

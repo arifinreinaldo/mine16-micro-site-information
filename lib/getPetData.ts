@@ -1,4 +1,4 @@
-import { databases, APPWRITE_DATABASE_ID, APPWRITE_COLLECTION_ID } from './appwrite';
+import { databases, users, APPWRITE_DATABASE_ID, APPWRITE_COLLECTION_ID } from './appwrite';
 import { Pet } from '@/types/pet';
 
 export interface AppwritePetDocument {
@@ -46,6 +46,18 @@ function parseImageUrls(doc: AppwritePetDocument): string[] {
   return [];
 }
 
+// Helper function to get user phone from Appwrite auth table
+async function getUserPhone(userId: string): Promise<string | undefined> {
+  try {
+    const user = await users.get(userId);
+    // Return phone if available
+    return user.phone || undefined;
+  } catch (error) {
+    console.error('Error fetching user phone from Appwrite:', error);
+    return undefined;
+  }
+}
+
 export async function getPetDataByCode(code: string): Promise<PetDataResponse | null> {
   try {
     // Query Appwrite database for the document with matching code
@@ -66,6 +78,9 @@ export async function getPetDataByCode(code: string): Promise<PetDataResponse | 
     // Get the first matching document
     const doc = response.documents[0] as unknown as AppwritePetDocument;
 
+    // Fetch user phone from auth table
+    const ownerPhone = await getUserPhone(doc.userId);
+
     // Transform Appwrite document to our Pet type
     const pet: Pet = {
       name: doc.petName,
@@ -80,7 +95,8 @@ export async function getPetDataByCode(code: string): Promise<PetDataResponse | 
       microchip: doc.microchip,
       imageUrls: parseImageUrls(doc),
       petType: doc.petType,
-      userId: doc.userId
+      userId: doc.userId,
+      ownerPhone
     };
 
     return { pet };
@@ -99,6 +115,9 @@ export async function getPetDataById(documentId: string): Promise<PetDataRespons
       documentId
     ) as unknown as AppwritePetDocument;
 
+    // Fetch user phone from auth table
+    const ownerPhone = await getUserPhone(doc.userId);
+
     // Transform Appwrite document to our Pet type
     const pet: Pet = {
       name: doc.petName,
@@ -113,7 +132,8 @@ export async function getPetDataById(documentId: string): Promise<PetDataRespons
       microchip: doc.microchip,
       imageUrls: parseImageUrls(doc),
       petType: doc.petType,
-      userId: doc.userId
+      userId: doc.userId,
+      ownerPhone
     };
 
     return { pet };
