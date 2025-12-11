@@ -247,6 +247,13 @@ export default async function Home({ searchParams }: HomeProps) {
 
   const { pet } = data;
 
+  // DEBUG: Log pet data to check values
+  console.log('=== DEBUG: Pet Data ===');
+  console.log('pet.ownerPhone:', pet.ownerPhone);
+  console.log('pet.membership:', pet.membership);
+  console.log('pet.showContact:', pet.showContact);
+  console.log('========================');
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}

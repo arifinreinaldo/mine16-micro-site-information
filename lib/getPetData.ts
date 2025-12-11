@@ -67,6 +67,15 @@ async function getUserContactData(userId: string): Promise<UserContactData> {
     // Convert show_contact to boolean (only "1" means true)
     const showContact = show_contact === "1";
 
+    // DEBUG: Log the values
+    console.log('=== DEBUG: User Contact Data ===');
+    console.log('userId:', userId);
+    console.log('user.phone:', user.phone);
+    console.log('prefs.membership:', membership);
+    console.log('prefs.show_contact:', show_contact);
+    console.log('showContact (converted):', showContact);
+    console.log('================================');
+
     // Return all contact data
     return {
       phone: user.phone || undefined,
